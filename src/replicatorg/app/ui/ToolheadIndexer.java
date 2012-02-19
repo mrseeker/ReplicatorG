@@ -25,8 +25,7 @@ public class ToolheadIndexer extends JDialog {
 
 	final static String instructions = "<html>" +
 			"Set the Toolhead Index of *all attached extruders*.\n"+  
-			"If you have multiple extruder boards attached, this will case an error.\n" +
-			"See documentaiton at: http://www.makerbot.com/docs/dualstrusion for details. </html>";
+			"If you have multiple extruder boards attached, this will case an error.</html>";
 	public ToolheadIndexer(Frame parent, final Driver d) {
 		super(parent,"Set Toolhead Index",true);
 		Container c = getContentPane();

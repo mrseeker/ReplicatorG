@@ -565,9 +565,10 @@ public class Base {
 
 			public void run() {
 				// default load The Replicator
+				
 				String machine = Base.preferences.get("machine.name", null);
 				if(machine == null)
-					Base.preferences.put("machine.name", "The Replicator Dual");
+					Base.preferences.put("machine.name", "Ultimaker 5D firmware");
 				
 				// build the editor object
 				editor = new MainWindow();

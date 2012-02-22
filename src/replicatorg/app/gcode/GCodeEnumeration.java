@@ -59,6 +59,8 @@ public enum GCodeEnumeration {
 	M71("M", 71, "Display Message, Wait For User Button Press"),
 	M72("M", 72, "Play a Tone or Song"),
 	M73("M", 73, "Manual Set Build %"),
+	M82("M", 82, "Use Absolute distances for extrusion"),
+	M84("M", 84, "Stop Idle Hold"),
 	M101("M", 101, "Turn Extruder On, Forward"),
 	M102("M", 102, "Turn Extruder On, Reverse"),
 	M103("M", 103, "Turn Extruder Off"),
@@ -107,9 +109,10 @@ public enum GCodeEnumeration {
 	G97("G", 97, "Spindle speed rate"),
 	G130("G", 130, "Set given axes potentiometer Value"),
 	G161("G", 161, "Home given axes to minimum"),
-	G162("G", 162, "Home given axes to maximum");
+	G162("G", 162, "Home given axes to maximum"), 
+	M92("M",92,"Set zero position");
 	
-	final String GCodeVersion = "2011.01.04"; //just for our own reference, what version of gcode (date of Replicat.org gcode commands)this can use
+	final String GCodeVersion = "2012.02.21"; //just for our own reference, what version of gcode (date of Replicat.org gcode commands)this can use
 
 	private static final Map<String, GCodeEnumeration> lookup = new TreeMap<String, GCodeEnumeration>(
 

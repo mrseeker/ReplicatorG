@@ -76,7 +76,34 @@ public class ToolpathGeneratorFactory {
 				return prefs;
 			}
 		};
+		
+		class Slic3r060 extends SkeinforgeGenerator {
+			
+			{
+				displayName = "Slicer 0.6.0";
+			}
+			
+			public File getDefaultSkeinforgeDir() {
+		    	return Base.getApplicationFile("slic3r_engines/slic3r060");
+			}
+			public File getUserProfilesDir() {
+		    	return Base.getUserFile("sf_profiles");
+			}
+			public List<SkeinforgePreference> initPreferences() {				
+				List <SkeinforgePreference> prefs = new LinkedList<SkeinforgePreference>();
+				SkeinforgeBooleanPreference raftPref = 			
+					new SkeinforgeBooleanPreference("Use Raft/Support",
+						"replicatorg.skeinforge.useRaft", true,
+						"Enables Raft and/or support material.  " + 
+						"Enabled: add a 'raft' of plastic before starting the build. If overhangs are detected, add support material.");
+				raftPref.addNegateableOption(new SkeinforgeOption("Raft", "Activate Raft:", "true"));
+				raftPref.addNegateableOption(new SkeinforgeOption("Raftless", "Activate Raftless:", "false"));
+				prefs.add(raftPref);
 
+				return prefs;
+			}
+		};
+		
 		class Skeinforge31 extends SkeinforgeGenerator {
 
 			{
@@ -333,6 +360,9 @@ public class ToolpathGeneratorFactory {
 			}
 		};
 		
+		if((new Slic3r060()).getDefaultSkeinforgeDir().exists())
+			list.add(new ToolpathGeneratorDescriptor(Slic3r060.displayName, 
+				"This is the latest version of Slic3r.", Slic3r060.class));
 		if((new Skeinforge47()).getDefaultSkeinforgeDir().exists())
 			list.add(new ToolpathGeneratorDescriptor(Skeinforge47.displayName, 
 				"This is a new version of skeinforge.", Skeinforge47.class));

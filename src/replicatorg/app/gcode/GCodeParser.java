@@ -467,7 +467,17 @@ public class GCodeParser {
 		case M73:
 			// Manually sets the percent complete info on the bot.
 			commands.add(new replicatorg.drivers.commands.SetBuildPercent(gcode.getCodeValue('P'), gcode.getComment() ) );
-			break;			
+			break;
+		case M82:
+			//TODO Sets the speed to absolute
+			absoluteMode=true;
+			break;
+		case M84:
+			//TODO Puts a lock on the motors
+			break;
+		case M92:
+			//TODO
+			break;
 		case M101:
 			commands.add(new replicatorg.drivers.commands.SetMotorDirection(DriverCommand.AxialDirection.CLOCKWISE));
 			commands.add(new replicatorg.drivers.commands.EnableExtruderMotor());

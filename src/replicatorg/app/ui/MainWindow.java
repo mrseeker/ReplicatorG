@@ -1784,7 +1784,7 @@ ToolpathGenerator.GeneratorListener
 			return;
 		}
 
-		String name = Base.preferences.get("machine.name", "The Replicator Dual");
+		String name = Base.preferences.get("machine.name", "Ultimaker 5D firmware");
 		if ( name != null ) {
 			loadMachine(name, true);
 		}

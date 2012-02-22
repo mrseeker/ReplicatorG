@@ -34,6 +34,7 @@ import java.text.NumberFormat;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Vector;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -141,7 +142,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 	private double rcFeedrateMultiply = 1;
 	private double rcTravelFeedrateMultiply = 1;
 	private double rcExtrusionMultiply = 1;
-	private double rcFeedrateLimit = 60*300; // 300mm/s still works on Ultimakers!
+	private double rcFeedrateLimit = 60*300+1; // 400mm/s still works on Ultimakers!
 	
 	private final ExtrusionUpdater extrusionUpdater = new ExtrusionUpdater(this);
 
@@ -460,8 +461,8 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			sendCommandLock.lock();
 
 			//assert (isInitialized());
-			// System.out.println("sending: " + next);
-	
+			//System.out.println("sending: " + next);
+			
 			next = clean(next);
 			next = fix(next); // make it compatible with older versions of the GCode interpeter
 			
@@ -702,7 +703,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			}
 
 			//System.out.println("received: " + line);
-			if(debugLevel > 1)
+			if(debugLevel > 0)
 				Base.logger.info("<< " + line);
 
 			if (line.length() == 0)
@@ -717,8 +718,8 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			    if (m.find( )) {
 			    	String temp = m.group(1);
 					
-					machine.currentTool().setCurrentTemperature(
-							Double.parseDouble(temp));
+					machine.currentTool().setCurrentTemperature(Double.parseDouble(temp));
+					Base.logger.finer("Current toolhead temperature: " + machine.currentTool().getCurrentTemperature() + "C");
 			    }
 				r = Pattern.compile("^ok.*b:([0-9\\.]+)$");
 			    m = r.matcher(line);
@@ -1151,11 +1152,31 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 
 		super.setTemperature(temperature);
 	}
+	
+	public void setTemperature(double temperature, int toolIndex) throws RetryException
+	{
+		sendCommand("T"+toolIndex + " M104 S" + df.format(temperature));
+		super.setTemperature(temperature, toolIndex);
+	}
+	
+	public void readAllTemperatures()
+	{
+		Vector<ToolModel> tools = machine.getTools();
 
+		for (ToolModel t : tools) {
+			this.readTemperature(t.getIndex());
+		}
+	}
+	
 	public void readTemperature() {
 		sendCommand(_getToolCode() + "M105");
 
 		super.readTemperature();
+	}
+	public void readTemperature(int toolcode) {
+		sendCommand("T"+toolcode + " M105");
+
+		super.readTemperature(toolcode);
 	}
 
 	public double getPlatformTemperature(){

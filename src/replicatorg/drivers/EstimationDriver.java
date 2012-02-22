@@ -32,6 +32,7 @@ import replicatorg.util.Point5d;
 public class EstimationDriver extends DriverBaseImplementation implements InteractiveDisplay{
 	// build time in milliseconds
 	private double buildTime = 0.0;
+	private double feedrate = 0.0;
 
 	// the length of our last move.
 	private double moveLength = 0.0;
@@ -68,7 +69,10 @@ public class EstimationDriver extends DriverBaseImplementation implements Intera
 
 		// Calculate the feedrate. This is the speed that the toolhead will
 		// be traveling at.
-		double feedrate = getSafeFeedrate(delta);
+		if (getSafeFeedrate(delta) > 0)
+		{
+			feedrate = getSafeFeedrate(delta);
+		}
 
 		// mostly for estimation driver.
 		
@@ -79,7 +83,7 @@ public class EstimationDriver extends DriverBaseImplementation implements Intera
 		// add it in!
 		if (millis > 0) {
 			buildTime = buildTime + millis;
-//			System.out.println(moveLength + "mm at " + feedrate + " takes " + Math.round(millis) + " millis (" + buildTime + "	total).");
+			System.out.println(moveLength + "mm at " + feedrate + " takes " + Math.round(millis) + " millis (" + buildTime + "	total).");
 		}
 		
 		setInternalPosition(p);

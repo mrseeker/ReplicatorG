@@ -1515,7 +1515,8 @@ ToolpathGenerator.GeneratorListener
 			exception.printStackTrace();
 		}
 		
-
+		//Welcome to the world of makerbot.
+		/*
 		String[] mBots = {"Cupcake", "Thingomatic", "Replicator"};
 		for(String bot : mBots)
 		{
@@ -1524,22 +1525,25 @@ ToolpathGenerator.GeneratorListener
 		
 		ButtonGroup botButtons = new ButtonGroup();
 		JMenu otherBotMenu = new JMenu("Other Bots");
+		*/
 		for (String name : names ) {
 
 			JRadioButtonMenuItem item = new JRadioButtonMenuItem(name);
-			item.setSelected(name.equals(Base.preferences.get("machine.name","The Replicator Dual")));
+			item.setSelected(name.equals(Base.preferences.get("machine.name","Ultimaker 5D firmware")));
 			item.addActionListener(machineMenuListener);			
 
-			botButtons.add(item);
+			//botButtons.add(item);
 			
-			if(isMBot(mBots, name)) machineMenu.add(item);
+			//if(isMBot(mBots, name)) 
+			machineMenu.add(item);
 			
-			else otherBotMenu.add(item);
+			//else otherBotMenu.add(item);
 		}
-		machineMenu.add(new JSeparator());
-		machineMenu.add(otherBotMenu);
+		//machineMenu.add(new JSeparator());
+		//machineMenu.add(otherBotMenu);
+		
 	}
-	
+	/*
 	private boolean isMBot(String[] mBots, String name)
 	{
 		for(String bot : mBots)
@@ -1547,7 +1551,8 @@ ToolpathGenerator.GeneratorListener
 			if(name.contains(bot)) return true;
 		}
 		return false;
-	}
+		
+	}*/
 	
 	/***
 	 * Sorts all bots of a certain type in a given vector to the head of the list

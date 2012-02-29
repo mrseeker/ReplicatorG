@@ -63,7 +63,7 @@ public class ExtrusionUpdater {
 	private void sendExtrudeCommand(double distance, double feedrate) {
 		determineCommandPeriod();
 		String feedrateString = driver.df.format(feedrate);
-//		Base.logger.info("commandPeriod="+this.commandPeriod);
+		Base.logger.info("commandPeriod="+this.commandPeriod);
 		if (driver.feedrate.get() != feedrate)
 		{
 			driver.sendCommand(driver._getToolCode() + "G1 F"+feedrateString);

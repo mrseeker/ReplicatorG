@@ -66,7 +66,7 @@ public class PreferencesWindow extends JFrame implements GuiConstants {
 		Font editorFont = Base.getFontPref("editor.font","Monospaced,plain,12");
 		fontSizeField.setText(String.valueOf(editorFont.getSize()));
 		String firmwareUrl = Base.preferences.get("replicatorg.updates.url", FirmwareUploader.DEFAULT_UPDATES_URL);
-		if (!(firmwareUrl == FirmwareUploader.DEFAULT_UPDATES_URL))
+		if (!(Base.preferences.get("replicatorg.updates.url", FirmwareUploader.DEFAULT_UPDATES_URL) == FirmwareUploader.DEFAULT_UPDATES_URL))
 		{
 			int n = JOptionPane.showConfirmDialog(this,
 					"<html>You are currently using " + firmwareUrl + " as your default <br>"+

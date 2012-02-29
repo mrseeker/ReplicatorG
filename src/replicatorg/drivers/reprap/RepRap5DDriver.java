@@ -142,7 +142,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 	private double rcFeedrateMultiply = 1;
 	private double rcTravelFeedrateMultiply = 1;
 	private double rcExtrusionMultiply = 1;
-	private double rcFeedrateLimit = 60*300+1; // 400mm/s still works on Ultimakers!
+	private double rcFeedrateLimit = 60*300+1; // 300mm/s still works on Ultimakers!
 	
 	private final ExtrusionUpdater extrusionUpdater = new ExtrusionUpdater(this);
 
@@ -703,7 +703,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			}
 
 			//System.out.println("received: " + line);
-			if(debugLevel > 0)
+			if(debugLevel > 1)
 				Base.logger.info("<< " + line);
 
 			if (line.length() == 0)
@@ -771,12 +771,57 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 					bufferLock.notifyAll();
 				}
 			}
-
-			// old arduino firmware sends "start"
+			
+			else if(line.contains("sd"))
+			{
+				if (line.contains("fail"))
+				{
+					Base.logger.warning("SD card failure!");
+				}
+				else
+				{
+					Base.logger.info("SD card connected");
+				}
+			}
+			
+			else if (line.startsWith("x:"))
+			{
+				String[] curlocation = line.split("[a-z]:");
+				
+				try {
+					super.setCurrentPosition(new Point5d(Double.parseDouble(curlocation[1]), Double.parseDouble(curlocation[2]), Double.parseDouble(curlocation[3])));
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					Base.logger.warning("Firmware sent unknown string: " + line);
+				} catch (RetryException e) {
+				}
+				Base.logger.fine("E: " + curlocation[4]);
+			}
+			
+			// Ultimakers send start
 			else if (line.contains("start")) {
 				// Reset line number first in case gcode is sent below
 				lineNumber.set(-1);
-
+				
+				String[] infosetup = line.split("start\\s.*BATCH=([0-9a-z.]{0,}).*PCB=([^,]{0,}).*ATMEGA=([^\\s]{0,}).*FW:V=([^,]{0,}).*BUILD=([^,]{0,}).*E0:([^,]{0,}).*SPEED=([^\\s]{0,}).*Z:PITCH=([^\\s]{0,})");
+				
+				if (line.contains("ULTIMAKER"))
+				{
+					Base.logger.info("Ultimaker 5D firmware detected.");
+					Base.logger.info(line);
+					Base.logger.info("Batchnumber = "+infosetup[1]);
+					Base.logger.info("PCB version = "+infosetup[2]);
+					Base.logger.info("ATMega = " + infosetup[3]);
+					Base.logger.info("Firmware version = " + infosetup[4]);
+					Base.logger.info("Build version = " + infosetup[5]);
+					Base.logger.info("Extruder = " + infosetup[6]);
+					Base.logger.info("Speed = " + infosetup[7]);
+					Base.logger.info("Z PITCH = " + infosetup[8]);
+				}
+				else if (line.contains("marlin"))
+				{
+					Base.logger.info("Marlin firmware detected.");
+				}
 				boolean active = !buffer.isEmpty();
 				flushBuffer();
 
@@ -883,7 +928,8 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 
 			} else if (line.startsWith("t:") || line.startsWith("c:")) {
 				// temperature, position handled above
-			} else {
+			}
+			else{
 				Base.logger.severe("Unknown: " + line);
 			}
 		}
@@ -1036,13 +1082,20 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 	 * Motor interface functions
 	 * @throws RetryException 
 	 **************************************************************************/
+	public void setMotorSpeedRPM(double rpm, int toolhead) throws RetryException
+	{
+		setMotorRPM(rpm,toolhead);
+	}
+	
 	public void setMotorRPM(double rpm, int toolhead) throws RetryException {
+		
 		if (fiveD == false)
 		{
 			sendCommand(_getToolCode() + "M108 R" + df.format(rpm));
 		}
 		else
 		{
+			Base.logger.info("Extrusion ON");
 			extrusionUpdater.setFeedrate(rpm);
 		}
 		
@@ -1057,6 +1110,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 
 		super.setMotorSpeedPWM(pwm);
 	}
+	
 	
 	public synchronized void enableMotor() throws RetryException {
 		String command = _getToolCode();
@@ -1151,6 +1205,10 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		sendCommand(_getToolCode() + "M104 S" + df.format(temperature));
 
 		super.setTemperature(temperature);
+	}
+	
+	public void setNewTemperature(double temperature) throws RetryException{
+		setTemperature(temperature);
 	}
 	
 	public void setTemperature(double temperature, int toolIndex) throws RetryException

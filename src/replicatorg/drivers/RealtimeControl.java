@@ -16,6 +16,7 @@ public interface RealtimeControl {
 	public boolean setExtrusionMultiplier(double multiplier);
 	public boolean setFeedrateLimit(double limit);
 	public double getFeedrateLimit();
+	public void setNewTemperature(double temperature) throws RetryException;
 	public void setDebugLevel(int level);
 	public int getDebugLevel();
 	// TODO: realtime backlash compensation?

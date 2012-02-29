@@ -293,8 +293,8 @@ public class ExtruderPanel extends JPanel{
 						}
 					}
 				}, "handleTextField", "motor-speed", 5, Base.getLocalFormat());
-				field.setValue(tool.getMotorSpeedReadingRPM() );// <-- should be
-				//field.setValue(machine.getDriver().getMotorRPM());
+				//field.setValue(tool.getMotorSpeedReadingRPM() );// <-- should be
+				field.setValue(machine.getDriver().getMotorRPM());
 				panel.add(label, "");
 				panel.add(field,"wrap");
 
@@ -809,6 +809,7 @@ public class ExtruderPanel extends JPanel{
 				// TODO: Hack to support RepRap/Ultimaker- always re-send RPM
 				if (tool.motorHasEncoder() || tool.motorIsStepper()) {
 					machine.runCommand(new replicatorg.drivers.commands.SetMotorSpeedRPM(machine.getDriver().getMotorRPM(),toolhead));
+					machine.runCommand(new replicatorg.drivers.commands.EnableExtruderMotor());
 				}
 				machine.runCommand(new replicatorg.drivers.commands.EnableExtruderMotor(toolhead));
 			} else if (name.equals("motor-stop")) {

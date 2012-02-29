@@ -29,6 +29,7 @@ import net.miginfocom.swing.MigLayout;
 import replicatorg.app.Base;
 import replicatorg.drivers.Driver;
 import replicatorg.drivers.RealtimeControl;
+import replicatorg.drivers.RetryException;
 import replicatorg.machine.MachineInterface;
 
 public class RealtimePanel extends JFrame implements ChangeListener, WindowListener {
@@ -43,7 +44,7 @@ public class RealtimePanel extends JFrame implements ChangeListener, WindowListe
 
 	// GUI items
 	JPanel mainPanel;
-	ControlSlider feedrateControl, travelFeedrateControl, extrusionControl;
+	ControlSlider feedrateControl, travelFeedrateControl, extrusionControl, temperatureControl;
 
 	public RealtimePanel(MachineInterface machine2) {
 		super("Real time control and tuning");
@@ -80,7 +81,12 @@ public class RealtimePanel extends JFrame implements ChangeListener, WindowListe
 		// TODO: extrusion scaling is not implemented in the driver yet.
 		extrusionControl.slider.setEnabled(false);
 		extrusionControl.field.setEnabled(false);
-
+		
+		//Temperature
+		temperatureControl = new ControlSlider("Temperature Control","C",100,300,200,extrusionPanel);
+		temperatureControl.slider.setEnabled(false);
+		temperatureControl.field.setEnabled(true);
+		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new MigLayout());
 		mainPanel.add(speedPanel,"flowy,wrap");
@@ -188,6 +194,12 @@ public class RealtimePanel extends JFrame implements ChangeListener, WindowListe
 					((RealtimeControl) driver).setFeedrateMultiplier((double) val/100);
 				} else if(s == extrusionControl.getSlider()) {
 					((RealtimeControl) driver).setExtrusionMultiplier((double) val/100);
+				} else if(s == temperatureControl.getSlider()) {
+					try {
+						((RealtimeControl) driver).setNewTemperature((double)val);
+					} catch (RetryException e1) {
+						Base.logger.warning("Could not set temperature");
+					}
 				} else if(s == travelFeedrateControl.getSlider()) {
 					((RealtimeControl) driver).setTravelFeedrateMultiplier((double) val/100);
 				}

@@ -21,7 +21,7 @@ G1 X95
 G1 Z0
 M70 (Adjust right two    thumbnuts until     nozzles touch)
 M01 (Adjust the right two thumbnuts until a sheet of paper slides between the nozzles and the platform.  Press OK to Continue)
-G1 Z5
+G1 Z5	
 G1 X-98
 G1 Z0
 M70 (Adjust left two     thumbnuts until     nozzles touch)

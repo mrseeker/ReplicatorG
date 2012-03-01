@@ -169,7 +169,7 @@ public class PdeTextAreaDefaults extends TextAreaDefaults {
     font = Base.getFontPref("editor.font","Monospaced,plain,12");
 
     fgcolor = Base.getColorPref("editor.fgcolor","#000000");
-    bgcolor = Base.getColorPref("editor.bgcolor","#ffffff");
+    bgcolor = Base.getColorPref("editor.bgcolor","#EAEAEA");
 
     caretVisible = true;
     caretBlinks = Base.preferences.getBoolean("editor.caret.blink",true);

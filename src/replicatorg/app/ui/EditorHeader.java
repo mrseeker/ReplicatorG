@@ -159,7 +159,7 @@ public class EditorHeader extends BGPanel implements ActionListener {
 		add(titleLabel);
         	titleLabel.setToolTipText("(0)");
         	//CHANGE COLOR HERE!
-		backgroundColor = new Color(0x87, 0xCE, 0xEB);
+		backgroundColor = new Color(0xEA, 0xEA, 0xEA);
 		textSelectedColor = Base.getColorPref("header.text.selected.color","#1A1A00");
 		textUnselectedColor = Base.getColorPref("header.text.unselected.color","#ffffff");
 		setBackground(backgroundColor);

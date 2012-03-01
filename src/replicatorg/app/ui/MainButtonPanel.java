@@ -148,7 +148,7 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	JLabel statusLabel;
 	
 	//CHANGE COLOR HERE!
-	final static Color BACK_COLOR = new Color(0x87, 0xCE, 0xEB); 
+	final static Color BACK_COLOR = new Color(0xDB, 0xDB, 0xDB); 
 	MainButton simButton, pauseButton, stopButton;
 	MainButton buildButton, resetButton, cpButton, rcButton;
 	MainButton disconnectButton, connectButton, generateButton;

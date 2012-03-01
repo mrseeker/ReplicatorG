@@ -797,7 +797,10 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				}
 				Base.logger.fine("E: " + curlocation[4]);
 			}
-			
+			else if (line.contains("marlin"))
+			{
+				Base.logger.info("Marlin firmware detected.");
+			}
 			// Ultimakers send start
 			else if (line.contains("start")) {
 				// Reset line number first in case gcode is sent below
@@ -818,10 +821,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 					Base.logger.info("Speed = " + infosetup[7]);
 					Base.logger.info("Z PITCH = " + infosetup[8]);
 				}
-				else if (line.contains("marlin"))
-				{
-					Base.logger.info("Marlin firmware detected.");
-				}
+				
 				boolean active = !buffer.isEmpty();
 				flushBuffer();
 
@@ -930,6 +930,11 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				// temperature, position handled above
 			}
 			else{
+				if (line.contains("[\\x20-\\x7F]"))
+				{
+					Base.logger.severe("Wrong baud rate detected.");
+					Base.logger.severe("Please select the right firmware.");
+				}
 				Base.logger.severe("Unknown: " + line);
 			}
 		}

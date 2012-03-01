@@ -48,6 +48,7 @@ import org.jfree.data.time.TimeTableXYDataset;
 import replicatorg.app.Base;
 import replicatorg.app.ui.CallbackTextField;
 import replicatorg.drivers.commands.DriverCommand.AxialDirection;
+import replicatorg.drivers.reprap.ExtrusionUpdater;
 import replicatorg.machine.MachineInterface;
 import replicatorg.machine.model.ToolModel;
 
@@ -802,6 +803,7 @@ public class ExtruderPanel extends JPanel{
 				// TODO: Hack to support RepRap/Ultimaker- always re-send RPM
 				if (tool.motorHasEncoder() || tool.motorIsStepper()) {
 					machine.runCommand(new replicatorg.drivers.commands.SetMotorSpeedRPM(machine.getDriver().getMotorRPM(),toolhead));
+					machine.runCommand(new replicatorg.drivers.commands.EnableExtruderMotor());
 				}
 				machine.runCommand(new replicatorg.drivers.commands.EnableExtruderMotor(toolhead));
 			} else if (name.equals("motor-reverse")) {

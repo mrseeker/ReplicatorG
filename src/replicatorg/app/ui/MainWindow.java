@@ -171,7 +171,7 @@ ToolpathGenerator.GeneratorListener
 	 */
 	private static final long serialVersionUID = 4144538738677712284L;
 
-	static final String WINDOW_TITLE = "ReplicatorG" + " - " + Base.VERSION_NAME;
+	static final String WINDOW_TITLE = "ReplicatorG Ultimaker Edition" + " - " + Base.VERSION_NAME;
 
 
 	final static String MODEL_TAB_KEY = "MODEL";
@@ -521,7 +521,7 @@ ToolpathGenerator.GeneratorListener
 
 		TextAreaPainter painter = textarea.getPainter();
 
-		Color color = Base.getColorPref("editor.bgcolor","#ffffff");
+		Color color = Base.getColorPref("editor.bgcolor","#EAEAEA");
 		painter.setBackground(color);
 		boolean highlight = Base.preferences.getBoolean("editor.linehighlight",true);
 		painter.setLineHighlightEnabled(highlight);
@@ -901,7 +901,7 @@ ToolpathGenerator.GeneratorListener
 		JMenuItem item;
 		JMenu menu = new JMenu("Help");
 		
-		item = new JMenuItem("Offline Documentation");
+		item = new JMenuItem("Wiki articles");
 		item.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -909,11 +909,43 @@ ToolpathGenerator.GeneratorListener
 				if(java.awt.Desktop.isDesktopSupported())
 				{
 					try {
-						File toOpen = Base.getApplicationFile("docs/replicat.org/index.html");
-						URI uri = toOpen.toURI();
-						java.awt.Desktop.getDesktop().browse(uri);
+						MainWindow.this.launchBrowser("http://wiki.ultimaker.com");
 					} catch (IOException e) {
-						Base.logger.log(Level.WARNING, "Could not load offline documentation.");
+						Base.logger.log(Level.WARNING, "Could not open browser!");
+					}
+				}
+			}
+		});
+		menu.add(item);
+		
+		item = new JMenuItem("Forums");
+		item.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// open up the local copy of replicat.org
+				if(java.awt.Desktop.isDesktopSupported())
+				{
+					try {
+						MainWindow.this.launchBrowser("http://forums.ultimaker.com");
+					} catch (IOException e) {
+						Base.logger.log(Level.WARNING, "Could not open browser!");
+					}
+				}
+			}
+		});
+		menu.add(item);
+		
+		item = new JMenuItem("Customer Support");
+		item.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// open up the local copy of replicat.org
+				if(java.awt.Desktop.isDesktopSupported())
+				{
+					try {
+						MainWindow.this.launchBrowser("http://support.ultimaker.com");
+					} catch (IOException e) {
+						Base.logger.log(Level.WARNING, "Could not open browser!");
 					}
 				}
 			}
@@ -1149,7 +1181,7 @@ ToolpathGenerator.GeneratorListener
 		changeToolheadMenu.add(left);
 		changeToolheadMenu.add(right);
 		menu.add(changeToolheadMenu);
-		dualstrusionItem = newJMenuItem("Merge .stl for DualExtrusion", 'D');
+		dualstrusionItem = newJMenuItem("Merge .stl for Dual Extrusion", 'D');
 		dualstrusionItem.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
@@ -1408,7 +1440,7 @@ ToolpathGenerator.GeneratorListener
 	{
 		try
 		{
-			//TRICKY: machieLoader may not be loaded yet 'naturally' so we force an early load
+			//TRICKY: machineLoader may not be loaded yet 'naturally' so we force an early load
 			String mname = Base.preferences.get("machine.name", "error");
 
 			MachineInterface machineInter = machineLoader.getMachineInterface(mname);
@@ -1516,7 +1548,7 @@ ToolpathGenerator.GeneratorListener
 			exception.printStackTrace();
 		}
 		
-		//Welcome to the world of makerbot.
+		//Welcome to the world of makerbot. Bad doggy!
 		/*
 		String[] mBots = {"Cupcake", "Thingomatic", "Replicator"};
 		for(String bot : mBots)
@@ -1725,7 +1757,7 @@ ToolpathGenerator.GeneratorListener
 			}
 		}
 	}
-	//[1] this causes a BUG: This assumes your canUndo buffer is exatly as old as your last save, not older.
+	//[1] this causes a BUG: This assumes your canUndo buffer is exactly as old as your last save, not older.
 	// which means you can't 'undo' into the past beyond a filesave. So if you change, save, change tabs, and return
 	// to a tab, that tab will (wrongly) throw up a 'modified' asterix on the name
 
@@ -2041,7 +2073,7 @@ ToolpathGenerator.GeneratorListener
 	enum BuildFlag
 	{
 		NONE(0), /// Canceled or software error
-		GEN_AND_BUILD(1), //genrate new gcode and build
+		GEN_AND_BUILD(1), //generate new gcode and build
 		JUST_BUILD(2); //expect someone checked for existing gcode, and build that
 		
 		public final int number;
@@ -2095,7 +2127,7 @@ ToolpathGenerator.GeneratorListener
 		BuildFlag buildFlag = detectBuildIntention();
 			
 		if(buildFlag == BuildFlag.NONE) {
-			return; //exit ro cancel clicked
+			return; //exit or cancel clicked
 		}
 		if(buildFlag == BuildFlag.GEN_AND_BUILD) {
 			//'rewrite' clicked
@@ -2552,7 +2584,7 @@ ToolpathGenerator.GeneratorListener
 		}
 
 		public void run() {
-			message("Estimating...");
+			message("Estimating build time, please wait...");
 			machineLoader.getMachineInterface().estimate(new JEditTextAreaSource(textarea));
 			editor.estimationOver();
 		}
@@ -2582,6 +2614,7 @@ ToolpathGenerator.GeneratorListener
 			DualStrusionWindow dsw;
 			
 			// this is stuff that DualStrusionConstruction needs, and until there's a better way to get it there...
+			// In other words, someone screwed up and we are supposed to fix it.
 			MachineType type = machineLoader.getMachineInterface().getMachineType();
 			MutableGCodeSource startCode = 
 					new MutableGCodeSource(machineLoader.getMachineInterface().getModel().getDualstartBookendCode());
@@ -2838,9 +2871,9 @@ ToolpathGenerator.GeneratorListener
 		if (loadDir != null) { directory = new File(loadDir); }
 		JFileChooser fc = new JFileChooser(directory);
 		FileFilter defaultFilter;
-		String[] extensions = {".gcode",".ngc",".stl"};
+		String[] extensions = {".gcode",".g",".ngc",".stl"};
 		fc.addChoosableFileFilter(defaultFilter = new ExtensionFilter(extensions,"GCode or STL files"));
-		String[] gcodeExtensions = {".gcode",".ngc"};
+		String[] gcodeExtensions = {".gcode",".ngc", ".g"};
 		fc.addChoosableFileFilter(new ExtensionFilter(gcodeExtensions,"GCode files"));
 		fc.addChoosableFileFilter(new ExtensionFilter(".stl","STL files"));
 		fc.addChoosableFileFilter(new ExtensionFilter(".obj","OBJ files (experimental)"));
@@ -2910,7 +2943,7 @@ ToolpathGenerator.GeneratorListener
 			boolean extensionValid = false;
 
 			// Note: Duplication of extension list from selectFile()
-			String[] extensions = {".gcode",".ngc",".stl",".obj",".dae"};
+			String[] extensions = {".g",".gcode",".ngc",".stl",".obj",".dae"};
 			String lowercasePath = path.toLowerCase();
 			for (String  extension : extensions) {
 				if (lowercasePath.endsWith(extension)) {

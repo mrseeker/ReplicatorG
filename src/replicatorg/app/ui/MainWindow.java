@@ -908,11 +908,7 @@ ToolpathGenerator.GeneratorListener
 				// open up the local copy of replicat.org
 				if(java.awt.Desktop.isDesktopSupported())
 				{
-					try {
 						MainWindow.this.launchBrowser("http://wiki.ultimaker.com");
-					} catch (IOException e) {
-						Base.logger.log(Level.WARNING, "Could not open browser!");
-					}
 				}
 			}
 		});
@@ -925,11 +921,7 @@ ToolpathGenerator.GeneratorListener
 				// open up the local copy of replicat.org
 				if(java.awt.Desktop.isDesktopSupported())
 				{
-					try {
-						MainWindow.this.launchBrowser("http://forums.ultimaker.com");
-					} catch (IOException e) {
-						Base.logger.log(Level.WARNING, "Could not open browser!");
-					}
+					MainWindow.this.launchBrowser("http://forums.ultimaker.com");
 				}
 			}
 		});
@@ -942,11 +934,7 @@ ToolpathGenerator.GeneratorListener
 				// open up the local copy of replicat.org
 				if(java.awt.Desktop.isDesktopSupported())
 				{
-					try {
 						MainWindow.this.launchBrowser("http://support.ultimaker.com");
-					} catch (IOException e) {
-						Base.logger.log(Level.WARNING, "Could not open browser!");
-					}
 				}
 			}
 		});

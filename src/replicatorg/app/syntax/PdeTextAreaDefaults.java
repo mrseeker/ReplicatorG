@@ -169,18 +169,18 @@ public class PdeTextAreaDefaults extends TextAreaDefaults {
     font = Base.getFontPref("editor.font","Monospaced,plain,12");
 
     fgcolor = Base.getColorPref("editor.fgcolor","#000000");
-    bgcolor = Base.getColorPref("editor.bgcolor","#EAEAEA");
+    bgcolor = Base.getColorPref("editor.bgcolor","#FFFFFF");
 
     caretVisible = true;
     caretBlinks = Base.preferences.getBoolean("editor.caret.blink",true);
     caretColor = Base.getColorPref("editor.caret.color","#333300");
 
-    selectionColor = Base.getColorPref("editor.selection.color","#ffcc00");
+    selectionColor = Base.getColorPref("editor.selection.color","#EAEAEA");
 
     lineHighlight =
       Base.preferences.getBoolean("editor.linehighlight",true);
     lineHighlightColor =
-    	Base.getColorPref("editor.linehighlight.color","#ddddbb");
+    	Base.getColorPref("editor.linehighlight.color","#EAEAEA");
 
     bracketHighlight =
       Base.preferences.getBoolean("editor.brackethighlight",true);
@@ -188,7 +188,7 @@ public class PdeTextAreaDefaults extends TextAreaDefaults {
     	Base.getColorPref("editor.brackethighlight.color","#000000");
 
     eolMarkers = Base.preferences.getBoolean("editor.eolmarkers",false);
-    eolMarkerColor = Base.getColorPref("editor.eolmarkers.color","#99991A");
+    eolMarkerColor = Base.getColorPref("editor.eolmarkers.color","#EAEAEA");
 
     paintInvalid = Base.preferences.getBoolean("editor.invalid",false);
   }

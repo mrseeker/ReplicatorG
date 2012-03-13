@@ -521,7 +521,7 @@ ToolpathGenerator.GeneratorListener
 
 		TextAreaPainter painter = textarea.getPainter();
 
-		Color color = Base.getColorPref("editor.bgcolor","#EAEAEA");
+		Color color = Base.getColorPref("editor.bgcolor","#FFFFFF");
 		painter.setBackground(color);
 		boolean highlight = Base.preferences.getBoolean("editor.linehighlight",true);
 		painter.setLineHighlightEnabled(highlight);

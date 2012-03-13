@@ -47,7 +47,8 @@ public class MachineStatusPanel extends BGPanel implements MachineListener {
 	private boolean isBuilding = false;
 	
 	static final private Color BG_ERROR = new Color(0xFF, 0x8A, 0x8A);
-	static final private Color BG_READY = new Color(0x73, 0xC7, 0xD7);
+	static final private Color BG_READY = new Color(0x2F, 0xBE, 0xD1);
+	static final private Color BG_NOTATTACH = new Color(0xEA, 0xEA, 0xEA);
 	static final private Color BG_BUILDING = new Color(0x73, 0xC7, 0xD7); // process yellow
 
 	
@@ -121,7 +122,9 @@ public class MachineStatusPanel extends BGPanel implements MachineListener {
 		case PAUSED:
 			bgColor = BG_BUILDING;
 			break;
-		case NOT_ATTACHED:	
+		case NOT_ATTACHED:
+			bgColor = BG_NOTATTACH;
+			break;
 		case ERROR:
 		default:
 			bgColor = BG_ERROR;

@@ -134,7 +134,7 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	
 
 	// / amount of space between groups of buttons on the toolbar
-	static final int BUTTON_GAP = 15;
+	static final int BUTTON_GAP = 5;
 
 	MainWindow editor;
 
@@ -148,12 +148,13 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	JLabel statusLabel;
 	
 	//CHANGE COLOR HERE!
-	final static Color BACK_COLOR = new Color(0xDB, 0xDB, 0xDB); 
+	final static Color BACK_COLOR = new Color(0xFF, 0xFF, 0xFF);
+	MainButton ultiButton;
 	MainButton simButton, pauseButton, stopButton;
 	MainButton buildButton, resetButton, cpButton, rcButton;
 	MainButton disconnectButton, connectButton, generateButton;
 	
-	MainButton uploadButton, playbackButton, fileButton;
+	MainButton uploadButton;//, playbackButton, fileButton;
 	
 	public MainButtonPanel(MainWindow editor) {
 		setLayout(new MigLayout("gap 5, ins 5"));
@@ -165,44 +166,47 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		setBackground(BACK_COLOR);
 
 		Font statusFont = Base.getFontPref("buttons.status.font","SansSerif,plain,12");
-		Color statusColor = Base.getColorPref("buttons.status.color","#FFFFFF");
+		Color statusColor = Base.getColorPref("buttons.status.color","#EAEAEA");
+		
+		ultiButton = makeButton("Go to Ultimaker", "images/logo.png");
+		add(ultiButton);
 
-
-		buildButton = makeButton("Build", "images/button-build.png");
+		buildButton = makeButton("Build", "images/build_active.png", "images/build_passive.png", "images/build_hover.png");
 		add(buildButton);
 
-		playbackButton = makeButton("Build from SD card currently in printer", "images/button-playback.png");
-		add(playbackButton);
-		fileButton = makeButton("Build to file for use with SD card", "images/button-to-file.png");
-		add(fileButton);
-		generateButton = makeButton("Model to GCode", "images/button-to-gcode.png");
+		//playbackButton = makeButton("Build from SD card currently in printer", "images/button-playback.png");
+		//add(playbackButton);
+		//fileButton = makeButton("Build to file for use with SD card", "images/button-to-file.png");
+		//add(fileButton);
+		generateButton = makeButton("Model to GCode", "images/gcodebutton_active.png", "images/gcodebutton_passive.png", "images/gcodebutton_hover.png");
 		add(generateButton);
 
-		pauseButton = makeButton("Pause", "images/button-pause.png");
+		pauseButton = makeButton("Pause", "images/pause_active.png", "images/pause_passive.png", "images/pause_hover.png");
 		add(pauseButton,"gap unrelated");
-		stopButton = makeButton("Stop", "images/button-stop.png");
+		stopButton = makeButton("Stop", "images/stop_active.png", "images/stop_passive.png","images/stop_hover.png");
 		add(stopButton);
 
 
-		cpButton = makeButton("Control panel", "images/button-control-panel.png");
-		rcButton = makeButton("Live tuning", "images/button-realtime-panel.png");
+		cpButton = makeButton("Control panel", "images/controlpanel_active.png", "images/controlpanel_passive.png", "images/controlpanel_hover.png");
+		rcButton = makeButton("Live tuning", "images/livetuning_active.png","images/livetuning_passive.png","images/livetuning_hover.png");
 		add(cpButton,"gap unrelated");
 		add(rcButton, "hidemode 1");
 		
-		resetButton = makeButton("Reset machine", "images/button-reset.png");
+		resetButton = makeButton("Reset machine", "images/reset_active.png", "images/reset_passive.png", "images/reset_hover.png");
 		add(resetButton,"gap unrelated");
-		connectButton = makeButton("Connect", "images/button-connect.png");
-		add(connectButton,"gap unrelated");
-		disconnectButton = makeButton("Disconnect", "images/button-disconnect.png");
-		add(disconnectButton);
+		
+		connectButton = makeButton("Connect", "images/machine_off.png", "images/machine_passive.png", "images/machine_off.png");
+		disconnectButton = makeButton("Disconnect", "images/machine_active.png", "images/machine_passive.png", "images/machine_active.png");
+		add(connectButton, "gap unrelated");
+		//add(disconnectButton);
 
 		statusLabel = new JLabel();
 		statusLabel.setFont(statusFont);
 		statusLabel.setForeground(statusColor);
 		add(statusLabel, "gap unrelated");
 
-		playbackButton.setToolTipText("This will build an object from an SD card currently inserted in the printer");
-		fileButton.setToolTipText("This will generate an .s3g file that can be put on an SD card and printed locally on the printer.");
+		//playbackButton.setToolTipText("This will build an object from an SD card currently inserted in the printer");
+		//fileButton.setToolTipText("This will generate an .s3g file that can be put on an SD card and printed locally on the printer.");
 		generateButton.setToolTipText("This will generate gcode for the currently open model.");
 		buildButton.setToolTipText("This will start building the object on the machine.");
 		pauseButton.setToolTipText("This will pause or resume the build.");
@@ -212,14 +216,48 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		resetButton.setToolTipText("This will restart the firmware on the machine.");
 		connectButton.setToolTipText("Connect to the machine.");
 		disconnectButton.setToolTipText("Disconnect from the machine.");
-
+		ultiButton.setToolTipText("Bzzzzz Bzzzzz Bzzzzz Beeeep!");
+		
 		setPreferredSize(new Dimension(750,60));
 		
 		// Update initial state
 		machineStateChangedInternal(new MachineStateChangeEvent(null, new MachineState(MachineState.State.NOT_ATTACHED)));
 	}
 
-	public MainButton makeButton(String rolloverText, String source) {
+	public MainButton makeButton(String rolloverText, String activeSrc, String inactiveSrc, String rolloverSrc) {
+		
+		BufferedImage img = Base.getImage(activeSrc, this);
+		BufferedImage img_inactive = Base.getImage(inactiveSrc, this);
+		BufferedImage img_rollover = Base.getImage(rolloverSrc, this);
+		if (img == null) {
+			Base.logger.severe("Couldn't load button image: " + activeSrc
+								+ ". Check that your path (" + System.getProperty("user.dir")
+								+ ") contains this file");
+			System.exit(1);
+		}
+		if (img_inactive == null) {
+			Base.logger.severe("Couldn't load button image: " + inactiveSrc
+								+ ". Check that your path (" + System.getProperty("user.dir")
+								+ ") contains this file");
+			System.exit(1);
+		}
+		if (img_rollover == null) {
+			Base.logger.severe("Couldn't load button image: " + rolloverSrc
+								+ ". Check that your path (" + System.getProperty("user.dir")
+								+ ") contains this file");
+			System.exit(1);
+		}
+
+		BufferedImage disabled = img_inactive;
+		Image inactive = img;
+		Image rollover = img_rollover;
+		Image active = img;
+		
+		MainButton mb = new MainButton(rolloverText, active, inactive, rollover, disabled);
+		mb.setEnabled(false);
+		return mb;
+	}
+public MainButton makeButton(String rolloverText, String source) {
 		
 		BufferedImage img = Base.getImage(source, this);
 		if (img == null) {
@@ -239,7 +277,6 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		return mb;
 	}
 
-
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == generateButton) {
 			editor.runToolpathGenerator(false);
@@ -247,10 +284,10 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 			editor.handleBuild();
 		} else if (e.getSource() == uploadButton) {
 			editor.handleUpload();
-		} else if (e.getSource() == fileButton) {
-			editor.handleBuildToFile();
-		} else if (e.getSource() == playbackButton) {
-			editor.handlePlayback();
+		//} else if (e.getSource() == fileButton) {
+		//	editor.handleBuildToFile();
+		//} else if (e.getSource() == playbackButton) {
+			//editor.handlePlayback();
 		} else if (e.getSource() == pauseButton) {
 			editor.handlePause();
 		} else if (e.getSource() == stopButton) {
@@ -297,10 +334,10 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		boolean hasModel = (editor != null) && (editor.getBuild() != null) &&
 				editor.getBuild().getModel() != null;
 		
-		fileButton.setEnabled(!building && hasGcode);
+		//fileButton.setEnabled(!building && hasGcode);
 		buildButton.setEnabled(readyToPrint);
 		generateButton.setEnabled(hasModel);
-		playbackButton.setEnabled(readyToPrint && hasPlayback);
+		//playbackButton.setEnabled(readyToPrint && hasPlayback);
 		pauseButton.setEnabled(building && connected);
 		stopButton.setEnabled(building);
 
@@ -310,11 +347,29 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		Machine.JobTarget runningTarget = s.isBuilding()?machine.getTarget():null;
 		
 		buildButton.setSelected(runningTarget == Machine.JobTarget.MACHINE);
-		fileButton.setSelected(runningTarget == Machine.JobTarget.FILE);
-		playbackButton.setSelected(runningTarget == Machine.JobTarget.NONE);
+		//fileButton.setSelected(runningTarget == Machine.JobTarget.FILE);
+		//playbackButton.setSelected(runningTarget == Machine.JobTarget.NONE);
 
 		resetButton.setEnabled(connected); 
+		if (connected && connectButton.isEnabled())
+		{	
+			
+			remove(connectButton);
+			remove(statusLabel);
+			add(disconnectButton, "gap unrelated");
+			add(statusLabel, "gap unrelated");
+		}
+		else if (!connected && disconnectButton.isEnabled())
+		{
+
+			remove(disconnectButton);
+			remove(statusLabel);
+			add(connectButton, "gap unrelated");
+			add(statusLabel, "gap unrelated");
+		}
+		//disconnectButton.setVisible(connected);
 		disconnectButton.setEnabled(connected);
+		//connectButton.setVisible(!connected);
 		connectButton.setEnabled(!connected);
 		cpButton.setEnabled(configurable);
 		rcButton.setVisible(editor.supportsRealTimeControl());

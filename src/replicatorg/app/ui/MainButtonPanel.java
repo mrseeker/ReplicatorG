@@ -111,7 +111,7 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 			// It's possible to get a change event before the status label is initialized 
 			if (statusLabel == null) return;
 			if (getModel().isRollover()) {
-				statusLabel.setText(getRolloverText());
+				//statusLabel.setText(getRolloverText());
 			} else {
 				statusLabel.setText("");
 			}
@@ -120,8 +120,8 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	
 	
 	// / height, width of the toolbar buttons
-	static final int BUTTON_WIDTH = 27;
-	static final int BUTTON_HEIGHT = 32;
+	static final int BUTTON_WIDTH = 53;
+	static final int BUTTON_HEIGHT = 53;
 	
 	static final float disabledFactors[] = { 1.0f, 1.0f, 1.0f, 0.5f };
 	static final float disabledOffsets[] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -134,7 +134,7 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	
 
 	// / amount of space between groups of buttons on the toolbar
-	static final int BUTTON_GAP = 5;
+	//static final int BUTTON_GAP = 5;
 
 	MainWindow editor;
 
@@ -148,8 +148,8 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	JLabel statusLabel;
 	
 	//CHANGE COLOR HERE!
-	final static Color BACK_COLOR = new Color(0xFF, 0xFF, 0xFF);
-	MainButton ultiButton;
+	final static Color BACK_COLOR = new Color(0x3A, 0xBA, 0xCE);
+	MainButton spaceButton1,spaceButton2,spaceButton3,spaceButton4;
 	MainButton simButton, pauseButton, stopButton;
 	MainButton buildButton, resetButton, cpButton, rcButton;
 	MainButton disconnectButton, connectButton, generateButton;
@@ -157,7 +157,7 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	MainButton uploadButton;//, playbackButton, fileButton;
 	
 	public MainButtonPanel(MainWindow editor) {
-		setLayout(new MigLayout("gap 5, ins 5"));
+		setLayout(new MigLayout("gap 0, ins 0"));
 		this.editor = editor;
 
 		// hardcoding new blue color scheme for consistency with images,
@@ -168,42 +168,45 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		Font statusFont = Base.getFontPref("buttons.status.font","SansSerif,plain,12");
 		Color statusColor = Base.getColorPref("buttons.status.color","#EAEAEA");
 		
-		ultiButton = makeButton("Go to Ultimaker", "images/logo.png");
-		add(ultiButton);
-
-		buildButton = makeButton("Build", "images/build_active.png", "images/build_passive.png", "images/build_hover.png");
+		spaceButton1 = makeButton("spacer", "images/spacer.png","images/spacer.png","images/spacer.png");
+		spaceButton2 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png");
+		spaceButton3 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png");
+		spaceButton4 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png");
+		add(spaceButton1);
+		
+		buildButton = makeButton("Build", "images/build_active.png", "images/build_passive.png", "images/build_press.png");
 		add(buildButton);
 
 		//playbackButton = makeButton("Build from SD card currently in printer", "images/button-playback.png");
 		//add(playbackButton);
 		//fileButton = makeButton("Build to file for use with SD card", "images/button-to-file.png");
 		//add(fileButton);
-		generateButton = makeButton("Model to GCode", "images/gcodebutton_active.png", "images/gcodebutton_passive.png", "images/gcodebutton_hover.png");
+		simButton = makeButton("Estimate time", "images/estimate_active.png", "images/estimate_passive.png", "images/estimate_press.png");
+		add(simButton);
+		generateButton = makeButton("Model to GCode", "images/g_active.png", "images/g_passive.png", "images/g_press.png");
 		add(generateButton);
-
-		pauseButton = makeButton("Pause", "images/pause_active.png", "images/pause_passive.png", "images/pause_hover.png");
-		add(pauseButton,"gap unrelated");
-		stopButton = makeButton("Stop", "images/stop_active.png", "images/stop_passive.png","images/stop_hover.png");
+		add(spaceButton2);
+		pauseButton = makeButton("Pause", "images/pause_active.png", "images/pause_passive.png", "images/pause_press.png");
+		add(pauseButton);
+		stopButton = makeButton("Stop", "images/stop_active.png", "images/stop_passive.png","images/stop_press.png");
 		add(stopButton);
-
-
-		cpButton = makeButton("Control panel", "images/controlpanel_active.png", "images/controlpanel_passive.png", "images/controlpanel_hover.png");
-		rcButton = makeButton("Live tuning", "images/livetuning_active.png","images/livetuning_passive.png","images/livetuning_hover.png");
-		add(cpButton,"gap unrelated");
-		add(rcButton, "hidemode 1");
-		
-		resetButton = makeButton("Reset machine", "images/reset_active.png", "images/reset_passive.png", "images/reset_hover.png");
-		add(resetButton,"gap unrelated");
-		
-		connectButton = makeButton("Connect", "images/machine_off.png", "images/machine_passive.png", "images/machine_off.png");
-		disconnectButton = makeButton("Disconnect", "images/machine_active.png", "images/machine_passive.png", "images/machine_active.png");
-		add(connectButton, "gap unrelated");
+		add(spaceButton3);
+		cpButton = makeButton("Control panel", "images/config_active.png", "images/config_passive.png", "images/config_press.png");
+		rcButton = makeButton("Live tuning", "images/tuning_active.png","images/tuning_passive.png","images/tuning_press.png");
+		add(cpButton);
+		add(rcButton);
+		add(spaceButton4);
+		resetButton = makeButton("Reset machine", "images/reset_active.png", "images/reset_passive.png", "images/reset_press.png");
+		add(resetButton);
+		connectButton = makeButton("Connect", "images/power_press.png", "images/power_passive.png", "images/power_press.png");
+		disconnectButton = makeButton("Disconnect", "images/power_active.png", "images/power_passive.png", "images/power_active.png");
+		add(connectButton);
 		//add(disconnectButton);
 
-		statusLabel = new JLabel();
-		statusLabel.setFont(statusFont);
-		statusLabel.setForeground(statusColor);
-		add(statusLabel, "gap unrelated");
+		//statusLabel = new JLabel();
+		//statusLabel.setFont(statusFont);
+		//statusLabel.setForeground(statusColor);
+		//add(statusLabel, "gap unrelated");
 
 		//playbackButton.setToolTipText("This will build an object from an SD card currently inserted in the printer");
 		//fileButton.setToolTipText("This will generate an .s3g file that can be put on an SD card and printed locally on the printer.");
@@ -216,7 +219,6 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		resetButton.setToolTipText("This will restart the firmware on the machine.");
 		connectButton.setToolTipText("Connect to the machine.");
 		disconnectButton.setToolTipText("Disconnect from the machine.");
-		ultiButton.setToolTipText("Bzzzzz Bzzzzz Bzzzzz Beeeep!");
 		
 		setPreferredSize(new Dimension(750,60));
 		
@@ -250,8 +252,8 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 
 		BufferedImage disabled = img_inactive;
 		Image inactive = img;
-		Image rollover = img_rollover;
-		Image active = img;
+		Image rollover = img;
+		Image active = img_rollover;
 		
 		MainButton mb = new MainButton(rolloverText, active, inactive, rollover, disabled);
 		mb.setEnabled(false);
@@ -280,6 +282,8 @@ public MainButton makeButton(String rolloverText, String source) {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == generateButton) {
 			editor.runToolpathGenerator(false);
+		} else if (e.getSource() == simButton){
+			editor.handleSimulate();		
 		} else if (e.getSource() == buildButton) {
 			editor.handleBuild();
 		} else if (e.getSource() == uploadButton) {
@@ -335,6 +339,7 @@ public MainButton makeButton(String rolloverText, String source) {
 				editor.getBuild().getModel() != null;
 		
 		//fileButton.setEnabled(!building && hasGcode);
+		simButton.setEnabled(hasGcode);
 		buildButton.setEnabled(readyToPrint);
 		generateButton.setEnabled(hasModel);
 		//playbackButton.setEnabled(readyToPrint && hasPlayback);
@@ -355,17 +360,17 @@ public MainButton makeButton(String rolloverText, String source) {
 		{	
 			
 			remove(connectButton);
-			remove(statusLabel);
-			add(disconnectButton, "gap unrelated");
-			add(statusLabel, "gap unrelated");
+			//remove(statusLabel);
+			add(disconnectButton);
+			//add(statusLabel, "gap unrelated");
 		}
 		else if (!connected && disconnectButton.isEnabled())
 		{
 
 			remove(disconnectButton);
-			remove(statusLabel);
-			add(connectButton, "gap unrelated");
-			add(statusLabel, "gap unrelated");
+			//remove(statusLabel);
+			add(connectButton);
+			//add(statusLabel, "gap unrelated");
 		}
 		//disconnectButton.setVisible(connected);
 		disconnectButton.setEnabled(connected);

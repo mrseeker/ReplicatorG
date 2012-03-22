@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Hashtable;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,7 +46,8 @@ public class RealtimePanel extends JFrame implements ChangeListener, WindowListe
 	// GUI items
 	JPanel mainPanel;
 	ControlSlider feedrateControl, travelFeedrateControl, extrusionControl, temperatureControl;
-
+	JButton fanButtonOn, fanButtonOff;
+	
 	public RealtimePanel(MachineInterface machine2) {
 		super("Real time control and tuning");
 		Image icon = Base.getImage("images/icon.gif", this);
@@ -87,10 +89,27 @@ public class RealtimePanel extends JFrame implements ChangeListener, WindowListe
 		temperatureControl.slider.setEnabled(false);
 		temperatureControl.field.setEnabled(true);
 		
+		fanButtonOn = new JButton();
+		fanButtonOn.setText("Enable Fan");
+		fanButtonOn.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+					  ((RealtimeControl) driver).enableFan();
+			  }
+			});
+		fanButtonOff = new JButton();
+		fanButtonOff.setText("Disable Fan");
+		fanButtonOff.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+					  ((RealtimeControl) driver).disableFan();
+			  }
+			});
+		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new MigLayout());
 		mainPanel.add(speedPanel,"flowy,wrap");
 		mainPanel.add(extrusionPanel,"flowy,wrap");
+		mainPanel.add(fanButtonOn, "flowy,wrap");
+		mainPanel.add(fanButtonOff,"flowy,wrap");
 		
 		new SpeedLimit(mainPanel);
 		

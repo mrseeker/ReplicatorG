@@ -46,10 +46,10 @@ public class MachineStatusPanel extends BGPanel implements MachineListener {
 	// Keep track of whether we are in a building state or not.
 	private boolean isBuilding = false;
 	
-	static final private Color BG_ERROR = new Color(0xFF, 0x8A, 0x8A);
-	static final private Color BG_READY = new Color(0x2F, 0xBE, 0xD1);
-	static final private Color BG_NOTATTACH = new Color(0xEA, 0xEA, 0xEA);
-	static final private Color BG_BUILDING = new Color(0x73, 0xC7, 0xD7); // process yellow
+	static final private Color BG_ERROR = new Color(0xff, 0x80, 0x60);
+	static final private Color BG_READY = new Color(0x80, 0xff, 0x60);
+	static final private Color BG_BUILDING = new Color(0xff, 0xef, 0x00); // process yellow
+	static final private Color BG_NOTATTACH = new Color(0xff, 0x80, 0x60);
 
 	
 	MachineStatusPanel() {

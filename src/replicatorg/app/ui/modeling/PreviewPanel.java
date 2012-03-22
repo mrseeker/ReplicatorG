@@ -267,7 +267,8 @@ public class PreviewPanel extends JPanel {
 	public Shape3D makeBoxFrame(Point3d ll, Vector3d dim) {
         Appearance edges = new Appearance();
         edges.setLineAttributes(new LineAttributes(3,LineAttributes.PATTERN_SOLID,true));
-        edges.setColoringAttributes(new ColoringAttributes(.9f,1f,1f,ColoringAttributes.NICEST));
+        //CHANGE COLOR HERE!!!
+        edges.setColoringAttributes(new ColoringAttributes(0f,0f,0f,ColoringAttributes.NICEST));
 		double[] coords = new double[wireBoxCoordinates.length];
 		for (int i = 0; i < wireBoxCoordinates.length;) {
 			coords[i] = (wireBoxCoordinates[i] * dim.x) + ll.x; i++;
@@ -392,7 +393,8 @@ public class PreviewPanel extends JPanel {
     		// Set up the appearance object for the central crosshairs.
 	        Appearance crosshairAppearance = new Appearance();
 	        crosshairAppearance.setLineAttributes(new LineAttributes(3,LineAttributes.PATTERN_SOLID,true));
-	        crosshairAppearance.setColoringAttributes(new ColoringAttributes(.9f,1f,1f,ColoringAttributes.NICEST));
+	        //CHANGE COLOR HERE!!!
+	        crosshairAppearance.setColoringAttributes(new ColoringAttributes(0f,0f,0f,ColoringAttributes.NICEST));
 	        // Set up the crosshair lines
 	        LineArray crosshairLines = new LineArray(2*2,GeometryArray.COORDINATES);
 	        crosshairLines.setCoordinate(0, new Point3d(0,-buildVol.getY()/2,0));

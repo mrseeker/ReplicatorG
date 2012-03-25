@@ -148,7 +148,7 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 	JLabel statusLabel;
 	
 	//CHANGE COLOR HERE!
-	final static Color BACK_COLOR = new Color(0x3A, 0xBA, 0xCE);
+	final static Color BACK_COLOR = new Color(0x2D, 0xB6, 0xC7);
 	MainButton spaceButton1,spaceButton2,spaceButton3,spaceButton4;
 	MainButton simButton, pauseButton, stopButton;
 	MainButton buildButton, resetButton, cpButton, rcButton;
@@ -168,38 +168,38 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		Font statusFont = Base.getFontPref("buttons.status.font","SansSerif,plain,12");
 		Color statusColor = Base.getColorPref("buttons.status.color","#EAEAEA");
 		
-		spaceButton1 = makeButton("spacer", "images/spacer.png","images/spacer.png","images/spacer.png");
-		spaceButton2 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png");
-		spaceButton3 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png");
-		spaceButton4 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png");
+		spaceButton1 = makeButton("spacer", "images/spacer.png","images/spacer.png","images/spacer.png","images/spacer.png");
+		spaceButton2 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png","images/spacer2.png");
+		spaceButton3 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png","images/spacer2.png");
+		spaceButton4 = makeButton("spacer", "images/spacer2.png","images/spacer2.png","images/spacer2.png","images/spacer2.png");
 		add(spaceButton1);
 		
-		buildButton = makeButton("Build", "images/build_active.png", "images/build_passive.png", "images/build_press.png");
+		buildButton = makeButton("Build", "images/build_active.png", "images/build_passive.png", "images/build_press.png","images/build_hover.png");
 		add(buildButton);
 
 		//playbackButton = makeButton("Build from SD card currently in printer", "images/button-playback.png");
 		//add(playbackButton);
 		//fileButton = makeButton("Build to file for use with SD card", "images/button-to-file.png");
 		//add(fileButton);
-		simButton = makeButton("Estimate time", "images/estimate_active.png", "images/estimate_passive.png", "images/estimate_press.png");
+		simButton = makeButton("Estimate time", "images/estimate_active.png", "images/estimate_passive.png", "images/estimate_press.png","images/estimate_hover.png");
 		add(simButton);
-		generateButton = makeButton("Model to GCode", "images/g_active.png", "images/g_passive.png", "images/g_press.png");
+		generateButton = makeButton("Model to GCode", "images/g_active.png", "images/g_passive.png", "images/g_press.png","images/g_hover.png");
 		add(generateButton);
 		add(spaceButton2);
-		pauseButton = makeButton("Pause", "images/pause_active.png", "images/pause_passive.png", "images/pause_press.png");
+		pauseButton = makeButton("Pause", "images/pause_active.png", "images/pause_passive.png", "images/pause_press.png","images/pause_hover.png");
 		add(pauseButton);
-		stopButton = makeButton("Stop", "images/stop_active.png", "images/stop_passive.png","images/stop_press.png");
+		stopButton = makeButton("Stop", "images/stop_active.png", "images/stop_passive.png","images/stop_press.png","images/stop_hover.png");
 		add(stopButton);
 		add(spaceButton3);
-		cpButton = makeButton("Control panel", "images/config_active.png", "images/config_passive.png", "images/config_press.png");
-		rcButton = makeButton("Live tuning", "images/tuning_active.png","images/tuning_passive.png","images/tuning_press.png");
+		cpButton = makeButton("Control panel", "images/config_active.png", "images/config_passive.png", "images/config_press.png","images/config_hover.png");
+		rcButton = makeButton("Live tuning", "images/tuning_active.png","images/tuning_passive.png","images/tuning_press.png","images/tuning_hover.png");
 		add(cpButton);
 		add(rcButton);
 		add(spaceButton4);
-		resetButton = makeButton("Reset machine", "images/reset_active.png", "images/reset_passive.png", "images/reset_press.png");
+		resetButton = makeButton("Reset machine", "images/reset_active.png", "images/reset_passive.png", "images/reset_press.png","images/reset_hover.png");
 		add(resetButton);
-		connectButton = makeButton("Connect", "images/power_press.png", "images/power_passive.png", "images/power_press.png");
-		disconnectButton = makeButton("Disconnect", "images/power_active.png", "images/power_passive.png", "images/power_active.png");
+		connectButton = makeButton("Connect", "images/power_press.png", "images/power_passive.png", "images/power_press.png","images/power.png");
+		disconnectButton = makeButton("Disconnect", "images/power_active.png", "images/power_passive.png", "images/power_active.png","images/power_hover.png");
 		add(connectButton);
 		//add(disconnectButton);
 
@@ -226,11 +226,12 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 		machineStateChangedInternal(new MachineStateChangeEvent(null, new MachineState(MachineState.State.NOT_ATTACHED)));
 	}
 
-	public MainButton makeButton(String rolloverText, String activeSrc, String inactiveSrc, String rolloverSrc) {
+	public MainButton makeButton(String rolloverText, String activeSrc, String inactiveSrc, String rolloverSrc, String hoverSrc) {
 		
 		BufferedImage img = Base.getImage(activeSrc, this);
 		BufferedImage img_inactive = Base.getImage(inactiveSrc, this);
 		BufferedImage img_rollover = Base.getImage(rolloverSrc, this);
+		BufferedImage img_hover = Base.getImage(hoverSrc, this);
 		if (img == null) {
 			Base.logger.severe("Couldn't load button image: " + activeSrc
 								+ ". Check that your path (" + System.getProperty("user.dir")
@@ -249,10 +250,15 @@ public class MainButtonPanel extends BGPanel implements MachineListener, ActionL
 								+ ") contains this file");
 			System.exit(1);
 		}
-
+		if (img_hover == null) {
+			Base.logger.severe("Couldn't load button image: " + hoverSrc
+								+ ". Check that your path (" + System.getProperty("user.dir")
+								+ ") contains this file");
+			System.exit(1);
+		}
 		BufferedImage disabled = img_inactive;
 		Image inactive = img;
-		Image rollover = img;
+		Image rollover = img_hover;
 		Image active = img_rollover;
 		
 		MainButton mb = new MainButton(rolloverText, active, inactive, rollover, disabled);

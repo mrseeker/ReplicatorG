@@ -379,7 +379,7 @@ public class PreviewPanel extends JPanel {
 	}
 
 	public Node makeBackground() {
-		Color backgroundColor = new Color(Base.preferences.getInt("ui.backgroundColor", 0));
+		Color backgroundColor = Color.white;
 		Background bg = new Background(backgroundColor.getRed()/255f, backgroundColor.getGreen()/255f, backgroundColor.getBlue()/255f);
 		bg.setApplicationBounds(bounds);
 		return bg;
@@ -392,7 +392,7 @@ public class PreviewPanel extends JPanel {
     		double gridSpacing = 10.0; // Dim grid has hash marks at 10mm intervals.
     		// Set up the appearance object for the central crosshairs.
 	        Appearance crosshairAppearance = new Appearance();
-	        crosshairAppearance.setLineAttributes(new LineAttributes(3,LineAttributes.PATTERN_SOLID,true));
+	        crosshairAppearance.setLineAttributes(new LineAttributes(2f,LineAttributes.PATTERN_SOLID,true));
 	        //CHANGE COLOR HERE!!!
 	        crosshairAppearance.setColoringAttributes(new ColoringAttributes(0f,0f,0f,ColoringAttributes.NICEST));
 	        // Set up the crosshair lines

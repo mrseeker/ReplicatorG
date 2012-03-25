@@ -89,10 +89,10 @@ public class MessagePanel extends JScrollPane {
 
 		// build styles for different types of console output
 		Color bgColor = Base.getColorPref("console.color","#FFFFFF");
-		Color infoColor= Base.getColorPref("console.info.color","#2FBED1");
-		Color warnColor = Base.getColorPref("console.warning.color","#EF3745");
-		Color timestampColor = Base.getColorPref("console.timestamp.color","#494949");
-		Color errColor = Base.getColorPref("console.error.color","#EF3745");
+		Color infoColor= Base.getColorPref("console.info.color","#000000");
+		Color warnColor = Base.getColorPref("console.warning.color","#DD7800");
+		Color timestampColor = Base.getColorPref("console.timestamp.color","#606060");
+		Color errColor = Base.getColorPref("console.error.color","#DD2200");
 		Font font = Base.getFontPref("console.font","Monospaced,bold,11");
 
 		// necessary?

@@ -66,24 +66,6 @@ public class PreferencesWindow extends JFrame implements GuiConstants {
 		Font editorFont = Base.getFontPref("editor.font","Monospaced,plain,12");
 		fontSizeField.setText(String.valueOf(editorFont.getSize()));
 		String firmwareUrl = Base.preferences.get("replicatorg.updates.url", FirmwareUploader.DEFAULT_UPDATES_URL);
-		if (!(Base.preferences.get("replicatorg.updates.url", FirmwareUploader.DEFAULT_UPDATES_URL) == FirmwareUploader.DEFAULT_UPDATES_URL))
-		{
-			int n = JOptionPane.showConfirmDialog(this,
-					"<html>You are currently using " + firmwareUrl + " as your default <br>"+
-					"website. It is recommend to set this to " + FirmwareUploader.DEFAULT_UPDATES_URL+"<br>"+
-					"Do you want replicatorG to reset the firmware URL?",
-					"Danger",
-					JOptionPane.YES_NO_OPTION,
-					JOptionPane.WARNING_MESSAGE);
-			if (n == JOptionPane.YES_OPTION) {
-				Base.preferences.put("replicatorg.updates.url", FirmwareUploader.DEFAULT_UPDATES_URL);
-				firmwareUrl = Base.preferences.get("replicatorg.updates.url", FirmwareUploader.DEFAULT_UPDATES_URL);
-			} else if (n == JOptionPane.NO_OPTION) {
-				//NULL
-			} else { // Cancel or whatnot
-				//NULL
-			}
-		}
 		firmwareUpdateUrlField.setText(firmwareUrl);
 		String logPath = Base.preferences.get("replicatorg.logpath", "");
 		logPathField.setText(logPath);

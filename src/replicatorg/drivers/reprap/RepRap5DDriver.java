@@ -565,7 +565,10 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 
 		// trim whitespace
 		clean = clean.trim();
-
+		
+		// Make sure that firmware still works when using , for decimals.
+		clean = clean.replaceAll(",", ".");
+		
 		// remove spaces
 		//clean = clean.replaceAll(" ", "");
 		

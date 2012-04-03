@@ -28,6 +28,7 @@ the contributor's full name, I've listed their github handle instead.
 * Ben Rockhold
 * Far McKon
 * Julius ter Pelkwijk
+* Menno van den Berg
 
 If I've left you off this list, let me know ASAP and I'll add your
 name.

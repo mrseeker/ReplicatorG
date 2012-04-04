@@ -81,7 +81,7 @@ public class ToolpathGeneratorFactory {
 		class Slic3r071 extends Slic3rGenerator {
 			
 			{
-				displayName = "Slicer 0.7.1";
+				displayName = "Slic3r 0.7.1";
 			}
 			
 			public File getDefaultSlic3rDir() {

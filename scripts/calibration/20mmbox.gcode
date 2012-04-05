@@ -4243,7 +4243,6 @@ G1 X91.220 Y92.705 E299.98024
 G1 X91.220 Y91.921 E299.98658
 G1 X91.921 Y91.220 E299.99460
 M104 S0 ; turn off temperature
-G1 Z+5 F3000;move Z up a bit
 G28 X0 Y0; home X axis and Y axis
 M84     ; disable motors
 M107 ; turn fan off

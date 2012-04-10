@@ -28,6 +28,8 @@ import replicatorg.app.Base;
 
 public enum GCodeEnumeration {	
 	
+	T0("T", 0, "Use toolhead 0"),
+	T1("T", 1, "Use toolhead 1"),
 	M0("M", 0, "Unconditional Halt, not supported on SD?"),
 	M1("M", 1, "Optional Halt, not supported on SD?"),
 	M2("M", 2, "End program"),

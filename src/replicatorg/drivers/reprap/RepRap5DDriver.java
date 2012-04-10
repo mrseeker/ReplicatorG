@@ -58,6 +58,7 @@ import replicatorg.drivers.Version;
 import replicatorg.drivers.reprap.ExtrusionUpdater.Direction;
 import replicatorg.machine.model.AxisId;
 import replicatorg.machine.model.ToolModel;
+import replicatorg.uploader.FirmwareUploader;
 import replicatorg.util.Point5d;
 
 public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListener, RealtimeControl 
@@ -177,7 +178,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		// Support for emergency stop is not assumed until it is detected. Detection of this feature should be in initialization.
 		hasEmergencyStop = false;
 		minimumVersion = new Version(0,1);
-		preferredVersion = new Version(0,9);
+		preferredVersion = new Version(1,0);
 		// Support for soft stop is not assumed until it is detected. Detection of this feature should be in initialization.
 		hasSoftStop = false;
 		
@@ -802,9 +803,10 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				m.find();
 				version = new Version(Integer.parseInt(m.group(1)),Integer.parseInt(m.group(2)));
 				//Some marlin versions send out their code...
+				FirmwareUploader.checkLatestVersion("Ultimaker - Arduino Mega Shield v1.5.X (Mega 2560 only)", version);
 				if (version.atLeast(minimumVersion))
 				{
-					if (version.compareTo(preferredVersion) == 1)
+					if (version.compareTo(preferredVersion) > 0)
 					{
 						//We are running an unsupported version
 						Base.logger.warning("You are running an unsupported firmware version!");
@@ -1016,7 +1018,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 					Base.logger.severe("Wrong baud rate or faulty firmware detected.");
 					Base.logger.severe("Please select the right machine Driver and try again.");
 					this.uninitialize();
-					throw new BadFirmwareVersionException(version,preferredVersion);
+					//throw new BadFirmwareVersionException(version,preferredVersion);
 				}
 				Base.logger.severe("Unknown: " + line);
 			}

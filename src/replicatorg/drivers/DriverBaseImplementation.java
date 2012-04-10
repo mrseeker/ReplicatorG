@@ -373,6 +373,12 @@ public class DriverBaseImplementation implements Driver, DriverQueryInterface{
 		// Determine the magnitude of this delta
 		double length = delta.length();
 		
+		//EASTER EGG BUNNY HOP!
+		if (feedrate > 1.798754748e+13d)
+		{
+			Base.logger.warning("Going faster than the speed of light will make the machine turn back time. Resetting to more sane values");
+		}
+		
 		// For each axis: if the current feedrate will cause this axis to move
 		// faster than it's maximum feedrate, lower the system feedrate so
 		// that it will be compliant.

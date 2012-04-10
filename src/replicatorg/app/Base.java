@@ -69,6 +69,7 @@ import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
@@ -455,6 +456,14 @@ public class Base {
 		}
 		
 		boolean cleanPrefs = false;
+		if (Base.preferences.getInt("replicatorg.cleanPrefs",0) != VERSION)
+		{
+			int option = JOptionPane.showConfirmDialog(null, "ReplicatorG detected that this is the first time you are running this version of ReplicatorG.\n If you have run ReplicatorG before, it is recommended to delete all old settings before you continue.\n\n Do you want ReplicatorG to remove any old settings? This can cause the software to close.",
+					"First start wizard", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if(option == 1)
+				resetPreferences();
+		}
+		Base.preferences.putInt("replicatorg.cleanPrefs", VERSION);
 		
 		// parse command line input
 		for (int i=0;i<args.length;i++) {
@@ -612,7 +621,7 @@ public class Base {
 				
 				String machine = Base.preferences.get("machine.name", null);
 				if(machine == null)
-					Base.preferences.put("machine.name", "Ultimaker 5D firmware");
+					Base.preferences.put("machine.name", "Ultimaker Sprinter/Marlin");
 				
 				// build the editor object
 				editor = new MainWindow();

@@ -1550,7 +1550,7 @@ ToolpathGenerator.GeneratorListener
 		for (String name : names ) {
 
 			JRadioButtonMenuItem item = new JRadioButtonMenuItem(name);
-			item.setSelected(name.equals(Base.preferences.get("machine.name","Ultimaker 5D firmware")));
+			item.setSelected(name.equals(Base.preferences.get("machine.name","Ultimaker Sprinter/Marlin")));
 			item.addActionListener(machineMenuListener);			
 
 			//botButtons.add(item);
@@ -1888,7 +1888,7 @@ ToolpathGenerator.GeneratorListener
 			return;
 		}
 
-		String name = Base.preferences.get("machine.name", "Ultimaker 5D firmware");
+		String name = Base.preferences.get("machine.name", "Ultimaker Sprinter/Marlin");
 		if ( name != null ) {
 			loadMachine(name, true);
 		}

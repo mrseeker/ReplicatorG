@@ -20,7 +20,7 @@ public class BadFirmwareVersionException extends VersionException {
 	public BadFirmwareVersionException(Version has, Version needs) {
 		super(has);
 		this.needs = needs;
-		Base.logger.warning(getMessage());
+		Base.showWarning("Old firmware detected!", getMessage(), null);
 	}
 	
 	public Version getNeeds() { return needs; }

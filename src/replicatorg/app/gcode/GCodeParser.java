@@ -633,10 +633,10 @@ public class GCodeParser {
 		double eVal = convertToMM(gcode.getCodeValue('E'), units); // / E units
 
 		// adjust for our offsets
-		xVal += currentOffset.x;
-		yVal += currentOffset.y;
-		zVal += currentOffset.z;
-
+		//xVal += currentOffset.x;
+		//yVal += currentOffset.y;
+		//zVal += currentOffset.z;
+		
 		// absolute just specifies the new position
 		if (absoluteMode) {
 			if (gcode.hasCode('X'))

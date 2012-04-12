@@ -258,6 +258,7 @@
 		<delete file="${target.dir}/license.txt"/>
 
 		<chmod file="${reso.dir}/tools/avrdude" perm="ugo+rx"/>
+		<chmod file="${reso.dir}/slic3r/Slic3r.app/Contents/MacOS/slic3r" perm="ugo+rx"/>
 		<!-- This process is now done manually and the resulting file is checked in to allow for the package to be build on other OS'es.
     <exec dir="." os="Mac OS X" executable="/usr/bin/lipo">
       <arg value="-remove"/>
@@ -278,10 +279,12 @@
 		<zip destfile="dist/${release.name}-mac.zip" update="false">
 			<zipfileset dir="dist/macosx/${release.name}" prefix="${release.name}">
 				<exclude name="tools/avrdude"/>
+				<exclude name="slic3r/Slic3r.app/Contents/MacOS/slic3r"/>
 				<exclude name="ReplicatorG.app/Contents/MacOS/ReplicatorG"/>
 			</zipfileset>
 			<zipfileset dir="dist/macosx/${release.name}" prefix="${release.name}" filemode="755">
 				<include name="tools/avrdude"/>
+				<include name="slic3r/Slic3r.app/Contents/MacOS/slic3r"/>
 				<include name="ReplicatorG.app/Contents/MacOS/ReplicatorG"/>
 			</zipfileset>
 		</zip>
@@ -363,12 +366,14 @@
 		<!-- permissions -->
 		<chmod file="${target.dir}/replicatorg" perm="ugo+rx"/>
 		<chmod file="${target.dir}/tools/avrdude" perm="ugo+rx"/>
+		<chmod file="${target.dir}/slic3r/bin/slic3r" perm="ugo+rx"/>
 
 		<tar destfile="dist/${release.name}-linux.tgz" compression="gzip" longfile="gnu">
 			<tarfileset dir="dist/linux/${release.name}" prefix="${release.name}"/>
 			<tarfileset dir="dist/linux/${release.name}" prefix="${release.name}" filemode="755">
 				<include name="replicatorg" />
 				<include name="tools/avrdude" />
+				<include name="slic3r/bin/slic3r" />
 			</tarfileset>
 		</tar>
 	</target>

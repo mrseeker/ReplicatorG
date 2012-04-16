@@ -348,7 +348,6 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			sendInitializationGcode(true);
 			Base.logger.info("Ready.");
 			this.setInitialized(true);
-			sendCommand("M115",true);
 		}
 	}
 	
@@ -798,6 +797,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			}
 			else if (line.startsWith("marlin"))
 			{
+				sendCommand("M115",false);
 				Pattern p = Pattern.compile("marlin u([0-9]).([0-9]).*");
 				Matcher m = p.matcher(line);
 				m.find();
@@ -901,7 +901,11 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 					Base.logger.finer("Speed = " + infosetup[7]);
 					Base.logger.finer("Z PITCH = " + infosetup[8]);
 				}
-				
+				else
+				{
+					//Its not an 5D firmware...
+					//sendCommand("M115",true);
+				}
 				boolean active = !buffer.isEmpty();
 				flushBuffer();
 

@@ -2855,7 +2855,7 @@ ToolpathGenerator.GeneratorListener
 
 	private String selectFile() {
 		File directory = null;
-		String loadDir = Base.preferences.get("ui.open_dir", null);
+		String loadDir = Base.preferences.get("ui.open_dir", System.getProperty("user.home"));
 		if (loadDir != null) { directory = new File(loadDir); }
 		JFileChooser fc = new JFileChooser(directory);
 		FileFilter defaultFilter;
@@ -3416,7 +3416,11 @@ ToolpathGenerator.GeneratorListener
 			for (int i = 0; i < arguments.length; i++)
 				command.add(arguments[i]);
 			ProcessBuilder pb = new ProcessBuilder(command);
-			Process process = pb.start();
+			Process process = null;
+			try
+			{
+				process = pb.start();
+			
 			Base.logger.log(Level.INFO, "Running script: " + path);
 			// Fire off some loggers
 			StreamLoggerThread ist = new StreamLoggerThread(process.getInputStream());
@@ -3425,6 +3429,10 @@ ToolpathGenerator.GeneratorListener
 			StreamLoggerThread est = new StreamLoggerThread(process.getErrorStream());
 			est.setDefaultLevel(Level.WARNING);
 			est.start();
+			}
+			catch(NullPointerException e){
+				Base.logger.log(Level.FINER, "Failed running script: " + path);
+			}
 		} catch (java.io.IOException e) {}
 	}
 }

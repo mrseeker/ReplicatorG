@@ -569,7 +569,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		if (!resending) 
 			sendCommandLock.unlock();
 	}
-
+	
 	public String clean(String str) {
 		String clean = str;
 
@@ -1325,6 +1325,12 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		super.readTemperature();
 		*/
 	}
+	
+	public void pause()
+	{
+		super.pause();
+	}
+	
 	public void readTemperature(int toolcode) {
 		machine.selectTool(toolcode);
 		sendCommand("T"+toolcode + " M105");

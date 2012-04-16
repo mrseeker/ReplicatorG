@@ -1,5 +1,6 @@
 package replicatorg.drivers.commands;
 
+import replicatorg.app.Base;
 import replicatorg.drivers.Driver;
 import replicatorg.drivers.RetryException;
 import replicatorg.drivers.StopException;

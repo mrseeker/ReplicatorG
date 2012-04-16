@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 
 import replicatorg.app.Base;
 import replicatorg.app.exceptions.BuildFailureException;
+import replicatorg.drivers.commands.UnconditionalHalt;
 import replicatorg.machine.model.AxisId;
 import replicatorg.machine.model.MachineModel;
 import replicatorg.util.Point5d;
@@ -449,7 +450,7 @@ public class DriverBaseImplementation implements Driver, DriverQueryInterface{
 	public void openClamp(int index) {
 		machine.getClamp(index).open();
 	}
-
+	
 	public void closeClamp(int index) {
 		machine.getClamp(index).close();
 	}
@@ -905,7 +906,7 @@ public class DriverBaseImplementation implements Driver, DriverQueryInterface{
 
 	public void setChamberTemperature(double temperature) {
 	}
-
+	
 	public double getPlatformTemperatureSetting() {
 		return machine.currentTool().getPlatformTargetTemperature();
 	}

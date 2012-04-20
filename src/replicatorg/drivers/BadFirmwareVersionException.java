@@ -26,7 +26,7 @@ public class BadFirmwareVersionException extends VersionException {
 	public Version getNeeds() { return needs; }
 
 	public String getMessage() {
-		return "Firmware version "+getDetected()+" detected; firmware version "+needs+" required.";
+		return "Firmware version "+getDetected()+" detected. ReplicatorG needs at least firmware version "+needs+" to function properly.";
 	}
 	
 }

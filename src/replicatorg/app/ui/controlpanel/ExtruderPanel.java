@@ -67,12 +67,12 @@ public class ExtruderPanel extends JPanel{
 	private double t1TargetTemperature;
 	private double pTargetTemperature;
 
-	final private static Color t0TargetColor = Color.MAGENTA;
+	final private static Color t0TargetColor = Color.GREEN;
 	final private static Color t0MeasuredColor = Color.RED;
-	final private static Color t1TargetColor = Color.CYAN;
+	final private static Color t1TargetColor = Color.ORANGE;
 	final private static Color t1MeasuredColor = Color.BLUE;
-	final private static Color pTargetColor = Color.YELLOW;
-	final private static Color pMeasuredColor = Color.GREEN;
+	final private static Color pTargetColor = Color.MAGENTA;
+	final private static Color pMeasuredColor = Color.YELLOW;
 	
 	long startMillis = System.currentTimeMillis();
 

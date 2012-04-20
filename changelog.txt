@@ -1,4 +1,6 @@
 0034 UltiReplicatorG
+ * Added support for SF50
+ * Fixed bug with recognizing some marlin faults.
  * Recognization of M115 commands
  * Updated t0 to t1 tolerance code
  * Fixed several problems with reprap5D

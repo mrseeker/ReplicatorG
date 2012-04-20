@@ -48,7 +48,6 @@ import org.w3c.dom.Node;
 import replicatorg.app.Base;
 import replicatorg.app.tools.XML;
 import replicatorg.app.util.serial.ByteFifo;
-import replicatorg.app.util.serial.Serial;
 import replicatorg.app.util.serial.SerialFifoEventListener;
 import replicatorg.drivers.BadFirmwareVersionException;
 import replicatorg.drivers.RealtimeControl;
@@ -177,7 +176,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		super();
 		// Support for emergency stop is not assumed until it is detected. Detection of this feature should be in initialization.
 		hasEmergencyStop = false;
-		minimumVersion = new Version(0,1);
+		minimumVersion = new Version(0,9);
 		preferredVersion = new Version(1,0);
 		// Support for soft stop is not assumed until it is detected. Detection of this feature should be in initialization.
 		hasSoftStop = false;
@@ -186,6 +185,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		setInitialized(false);
 
 		//Thank you Alexey (http://replicatorg.lighthouseapp.com/users/166956)
+		//FIXME: Support when using american symbols!!!
 		DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance();
 		dfs.setDecimalSeparator('.');
 		df = new DecimalFormat("#.######", dfs);
@@ -348,6 +348,23 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			sendInitializationGcode(true);
 			Base.logger.info("Ready.");
 			this.setInitialized(true);
+			sendCommand("M115",true);
+			
+			//Firmware check!
+			FirmwareUploader.checkLatestVersion("Ultimaker - Arduino Mega Shield v1.5.X (Mega 2560 only)", version);
+			if (version.atLeast(minimumVersion))
+			{
+				if (version.compareTo(preferredVersion) > 0)
+				{
+					//We are running an unsupported version
+					Base.logger.warning("You are running an unsupported firmware version!");
+				}
+			}
+			else
+			{
+				this.uninitialize();
+				throw new BadFirmwareVersionException(version,preferredVersion);
+			}
 		}
 	}
 	
@@ -724,6 +741,10 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 					//if echo is turned on relay it to the user for debugging
 					Base.logger.info(line.substring(5));
 			}
+			else if (line.startsWith("error:")) {
+				//if warning is turned on relay it to the user for debugging
+				Base.logger.warning(line.substring(5));
+			}
 			else if (line.startsWith("ok t:")||line.startsWith("t:")) {
 				Pattern r = Pattern.compile("t:([0-9\\.]+)");
 			    Matcher m = r.matcher(line);
@@ -797,11 +818,11 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			}
 			else if (line.startsWith("marlin"))
 			{
-				sendCommand("M115",false);
-				Pattern p = Pattern.compile("marlin u([0-9]).([0-9]).*");
+				Pattern p = Pattern.compile("marlin:? [a-z]?([0-9]).([0-9]).*");
 				Matcher m = p.matcher(line);
 				m.find();
-				version = new Version(Integer.parseInt(m.group(1)),Integer.parseInt(m.group(2)));
+				 version = new Version(Integer.parseInt(m.group(1)),Integer.parseInt(m.group(2)));
+				 
 				//Some marlin versions send out their code...
 				FirmwareUploader.checkLatestVersion("Ultimaker - Arduino Mega Shield v1.5.X (Mega 2560 only)", version);
 				if (version.atLeast(minimumVersion))
@@ -829,15 +850,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				m.find();
 				Base.logger.fine("Detecting firmware!");
 				//Assume we got an answer to M115, lets see what we got:
-				if (m.group(1).startsWith("marlin"))
-				{
-					Base.logger.fine("setting marlin");
-					setFirmwareName("Marlin");
-				}
-				else
-				{
-					setFirmwareName("Unknown");
-				}
+				setFirmwareName(m.group(1));
 				if (m.group(2).contains("ultimaker") || m.group(5).contains("ultimaker"))
 				{
 					//We got an ultimaker, hurray!
@@ -850,7 +863,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				//infosetup[5] = extruder amount!
 				if (version.atLeast(minimumVersion))
 				{
-					if (version.compareTo(preferredVersion) == 1)
+					if (version.compareTo(preferredVersion) > 0)
 					{
 						//We are running an unsupported version
 						Base.logger.warning("You are running an unsupported firmware version!");
@@ -977,7 +990,11 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 							found = true;
 							break lineSearch;
 						}
-						resend.add(bufferedLine);
+						//TODO: Be more specific!
+						if (!bufferedLine.contains("M115"))
+						{
+							resend.add(bufferedLine);
+						}
 						if (bufferedLineNumber == badLineNumber) {
 							found = true;
 							break lineSearch;

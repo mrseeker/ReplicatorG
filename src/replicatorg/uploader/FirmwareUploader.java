@@ -149,7 +149,8 @@ public class FirmwareUploader {
 						+ ") of the "
 						+ boardName
 						+ " firmware is now available.\n"
-						+ "Use the \"Upload Firmware...\" item in the \"Machine\" menu to upload it to your machine.";
+						+ "Use the \"Upload Firmware...\" item in the \"Machine\" menu to upload it to your machine.\n\n"
+						+ "Please select the right driver when changing from 5D to Marlin.";
 					Object[] params = { message, checkbox };
 					JOptionPane.showMessageDialog(null, params,
 							"New Firmware Available", JOptionPane.INFORMATION_MESSAGE);

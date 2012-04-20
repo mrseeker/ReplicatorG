@@ -460,8 +460,11 @@ public class Base {
 		{
 			int option = JOptionPane.showConfirmDialog(null, "ReplicatorG detected that this is the first time you are running this version of ReplicatorG.\n If you have run ReplicatorG before, it is recommended to delete all old settings before you continue.\n\n Do you want ReplicatorG to remove any old settings? This can cause the software to close.",
 					"First start wizard", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-			if(option == 1)
+			if(option == JOptionPane.YES_OPTION)
+			{
 				resetPreferences();
+				Base.logger.info("Resetting preferences complete!");
+			}
 		}
 		Base.preferences.putInt("replicatorg.cleanPrefs", VERSION);
 		

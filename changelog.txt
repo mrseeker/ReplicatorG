@@ -1,4 +1,5 @@
 0034 UltiReplicatorG
+ * Fixed bug with extruder control not functioning.
  * Added support for SF50
  * Fixed bug with recognizing some marlin faults.
  * Recognization of M115 commands

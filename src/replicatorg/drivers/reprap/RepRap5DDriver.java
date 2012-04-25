@@ -1222,10 +1222,16 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		super.setMotorSpeedPWM(pwm);
 	}
 	
+	public synchronized void enableMotor(int toolhead) throws RetryException {
+		if (toolhead >= 0)
+		{
+			machine.selectTool(toolhead);
+			this.enableMotor();
+		}
+	}
 	
 	public synchronized void enableMotor() throws RetryException {
 		String command = _getToolCode();
-
 		if (fiveD == false)
 		{
 			if (machine.currentTool().getMotorDirection() == ToolModel.MOTOR_CLOCKWISE)
@@ -1239,10 +1245,13 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		{
 			extrusionUpdater.setDirection( machine.currentTool().getMotorDirection()==1?
 					Direction.forward : Direction.reverse );
-			extrusionUpdater.startExtruding();
+			if (extrusionUpdater.isExtruding.get() == false)
+			{
+				extrusionUpdater.startExtruding();
+			}
 		}
 
-		super.enableMotor();
+		//super.enableMotor();
 	}
 
 	/**
@@ -1262,10 +1271,18 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				distance *= -1;
 			}
 			sendCommand(_getToolCode() + "G1 E" + (ePosition.get() + distance) + " F" + feedrate);
-			super.disableMotor();
+			//super.disableMotor();
 		}
 	}
 
+	public void disableMotor(int toolhead) throws RetryException {
+		if (toolhead >= 0)
+		{
+			machine.selectTool(toolhead);
+			this.disableMotor();
+		}
+	}
+	
 	public void disableMotor() throws RetryException {
 		if (fiveD == false)
 		{

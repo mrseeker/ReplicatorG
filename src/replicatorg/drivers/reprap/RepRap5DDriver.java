@@ -654,8 +654,8 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		    	fixed = m.group(1)+" F"+formatter.format(newvalue)+" "+m.group(3);
 		    }
 		    
-	/*	    // Rescale E value
-			r = Pattern.compile("(.*)E([0-9\\.]*)(.*)");//E317.52// Z-moves slower! Extrude 10% less? More and more rapid reversing
+		    // Rescale E value
+/*			r = Pattern.compile("(.*)E([0-9\\.]*)(.*)");//E317.52// Z-moves slower! Extrude 10% less? More and more rapid reversing
 		    m = r.matcher(fixed);
 		    if (m.find( )) {
 		    	double newEvalue = Double.valueOf(m.group(2).trim()).doubleValue();
@@ -665,7 +665,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		    	NumberFormat formatter = new DecimalFormat("#0.0", dfs);
 		    	fixed = m.group(1)+" E"+formatter.format(newEvalue)+" "+m.group(3);
 		    }
-	*/
+*/	
 	    }
 	    
 	    return fixed; // no change!
@@ -762,8 +762,8 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 							Double.parseDouble(bedTemp));
 			    }
 			}
-			else if (line.startsWith("ok c:")||line.startsWith("c:")) {
-				Pattern r = Pattern.compile("c: *x:?([-0-9\\.]+) *y:?([-0-9\\.]+) *z:?([-0-9\\.]+)");
+			else if (line.startsWith("ok c:")||line.startsWith("x:")||line.startsWith("c:")) {
+				Pattern r = Pattern.compile("x:?([-0-9\\.]+).*y:?([-0-9\\.]+).*z:?([-0-9\\.]+).*");
 				Matcher m = r.matcher(line);
 				if (m.find()) {
 					double x = Double.parseDouble(m.group(1));
@@ -772,7 +772,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 					// super to avoid parroting back a G92
 					try {
 						super.setCurrentPosition(new Point5d(x, y, z));
-						//Base.logger.fine("setting currentposition to:"+x+","+y+","+z+".");
+						Base.logger.fine("setting currentposition to:"+x+","+y+","+z+".");
 					} catch (RetryException e) {
 						// do or do not, there is no retry
 					}
@@ -1038,7 +1038,6 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				{
 					Base.logger.severe("Wrong baud rate or faulty firmware detected.");
 					Base.logger.severe("Please select the right machine Driver and try again.");
-					Base.logger.warning("DEBUG: 4");
 					this.disconnect();
 					//throw new BadFirmwareVersionException(version,preferredVersion);
 				}
@@ -1121,6 +1120,11 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		super.queuePoint(p);
 	}
 
+	public Point5d getCurrentPosition(boolean forceUpdate)
+	{
+		return super.getCurrentPosition(forceUpdate);
+	}
+	
 	public void setCurrentPosition(Point5d p) throws RetryException {
 		sendCommand("G92 X" + df.format(p.x()) + " Y" + df.format(p.y()) + " Z"
 				+ df.format(p.z()));

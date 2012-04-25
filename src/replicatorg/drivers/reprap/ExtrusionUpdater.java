@@ -53,9 +53,9 @@ public class ExtrusionUpdater {
 		if(motorSteps == 0.0) {
 			motorSteps = 200;
 		}
-		Base.logger.info("motorSteps="+motorSteps);
+		Base.logger.fine("motorSteps="+motorSteps);
 		this.commandPeriod = (long) (motorSteps/2); //ms
-		Base.logger.info("commandPeriod="+this.commandPeriod);
+		Base.logger.fine("commandPeriod="+this.commandPeriod);
 		
 	}
 	
@@ -63,7 +63,7 @@ public class ExtrusionUpdater {
 	private void sendExtrudeCommand(double distance, double feedrate) {
 		determineCommandPeriod();
 		String feedrateString = driver.df.format(feedrate);
-		Base.logger.info("commandPeriod="+this.commandPeriod);
+		Base.logger.fine("commandPeriod="+this.commandPeriod);
 		if (driver.feedrate.get() != feedrate)
 		{
 			driver.sendCommand(driver._getToolCode() + "G1 F"+feedrateString);
@@ -99,7 +99,6 @@ public class ExtrusionUpdater {
 
 	public void update() throws InterruptedException {
 		int queueSize;
-
 		/* creating a series of 5D extrude commands to
 		 * keep the command queue full. */
 		if(isExtruding.get() == true)
@@ -113,7 +112,7 @@ public class ExtrusionUpdater {
 				queueSize = driver.queueSize();
 				if (queueSize > maxQueuedExtrudeTime) Thread.sleep(100);
 			} while (queueSize > maxQueuedExtrudeTime);
-				
+			
 			// Send extrude command
 			/** mm/s */
 			double feedrate = this.getFeedrate();// mm per minute

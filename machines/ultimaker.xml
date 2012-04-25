@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="utf-8"?>
 <machines>
-        <machine experimental="0">
+        <machine experimental="1">
                 <name>Ultimaker 5D firmware</name>
                 <geometry type="cartesian">
                         <!-- different pulleys on X and Y axii -->
@@ -9,7 +9,7 @@
                         <axis id="z" length="210" maxfeedrate="650" stepspermm="160" endstops="min"/> <!-- quarter-step driver -->
                 </geometry>
                 <tools>
-                        <tool name="Stepper-based pinch extruder" type="extruder" material="abs" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="1000" />
+                        <tool name="Stepper-based pinch extruder" type="extruder" material="abs" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="50" />
                 </tools>
                 <clamps></clamps>
                 <firmware url="http://firmware.ultimaker.com/latest" autoupgrade="false"></firmware>
@@ -46,7 +46,7 @@ M108 S0
                         <axis id="z" length="210" maxfeedrate="650" stepspermm="160" endstops="min"/> <!-- quarter-step driver -->
                 </geometry>
                 <tools>
-                        <tool name="Stepper-based pinch extruder" type="extruder" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="1000" />
+                        <tool name="Stepper-based pinch extruder" type="extruder" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="50" />
                 </tools>
                 <clamps></clamps>
                 <firmware url="http://firmware.ultimaker.com/latest" autoupgrade="false"></firmware>
@@ -82,8 +82,8 @@ M108 S0
                         <axis id="z" length="210" maxfeedrate="650" stepspermm="47.0698523" endstops="min"/> <!-- 16th-step driver -->
                 </geometry>
                 <tools>
-                        <tool name="Stepper-based pinch extruder" type="extruder" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="true" motor_steps="1800" default_rpm="1000" />
-<tool name="Stepper-based pinch extruder" type="extruder" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="true" motor_steps="1800" default_rpm="1000" />
+                        <tool name="Stepper-based pinch extruder" type="extruder" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="true" motor_steps="1800" default_rpm="50" />
+<tool name="Stepper-based pinch extruder" type="extruder" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="true" motor_steps="1800" default_rpm="50" />
                 </tools>
                 <clamps></clamps>
                 <firmware url="http://firmware.ultimaker.com/latest" autoupgrade="false"></firmware>
@@ -119,8 +119,8 @@ M108 S0
                         <axis id="z" length="210" maxfeedrate="650" stepspermm="47.0698523" endstops="min"/> <!-- 16th-step driver -->
                 </geometry>
                 <tools>
-                        <tool name="Stepper-based pinch extruder" type="extruder" index="0" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="1000" />
-<tool name="Stepper-based pinch extruder" type="extruder" index="1" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="1000" />
+                        <tool name="Stepper-based pinch extruder" type="extruder" index="0" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="50" />
+<tool name="Stepper-based pinch extruder" type="extruder" index="1" material="pla" motor="true" floodcoolant="false" mistcoolant="false" fan="true" valve="false" collet="false" heater="true" heatedplatform="false" motor_steps="1800" default_rpm="50" />
                 </tools>
                 <clamps></clamps>
                 <firmware url="http://firmware.ultimaker.com/latest" autoupgrade="false"></firmware>

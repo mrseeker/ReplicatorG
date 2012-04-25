@@ -135,7 +135,7 @@ public class FirmwareUploader {
 		if (latest.compareTo(version) > 0) {
 			Base.logger.info("latest " + latest.toString() + " old "
 					+ version.toString());
-			final String key = "replicatorG.ignoreFirmware." + boardName + "."
+			final String key = "replicatorG.ignoreFirmware." + boardName.replaceAll(" ","") + "."
 					+ version.toString();
 			if (Base.preferences.getBoolean(key, false)) {
 				return false;

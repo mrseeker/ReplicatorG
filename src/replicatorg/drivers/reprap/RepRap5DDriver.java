@@ -362,7 +362,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			}
 			else
 			{
-				this.uninitialize();
+				this.disconnect();
 				throw new BadFirmwareVersionException(version,preferredVersion);
 			}
 		}
@@ -835,7 +835,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				}
 				else
 				{
-					this.uninitialize();
+					this.disconnect();
 					throw new BadFirmwareVersionException(version,preferredVersion);
 				}
 			}
@@ -871,7 +871,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				}
 				else
 				{
-					this.uninitialize();
+					this.disconnect();
 					throw new BadFirmwareVersionException(version,preferredVersion);
 				}
 			}
@@ -1038,7 +1038,8 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				{
 					Base.logger.severe("Wrong baud rate or faulty firmware detected.");
 					Base.logger.severe("Please select the right machine Driver and try again.");
-					this.uninitialize();
+					Base.logger.warning("DEBUG: 4");
+					this.disconnect();
 					//throw new BadFirmwareVersionException(version,preferredVersion);
 				}
 				Base.logger.severe("Unknown: " + line);

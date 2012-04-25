@@ -463,6 +463,7 @@ ToolpathGenerator.GeneratorListener
 	public void restorePreferences() {
 		if (Base.openedAtStartup != null) {
 			handleOpen2(Base.openedAtStartup);
+			
 		} else {
 			// last sketch that was in use, or used to launch the app
 			final String prefName = "replicatorg.initialopenbehavior";
@@ -475,7 +476,8 @@ ToolpathGenerator.GeneratorListener
 				Iterator<String> i = mruList.iterator();
 				if (i.hasNext()) {
 					String lastOpened = i.next();
-					if (new File(lastOpened).exists()) {
+					if (new File(lastOpened).exists() && ( (Base.preferences.getBoolean("replicatorg.isStarting", false)) == false)) {
+						Base.preferences.putBoolean("replicatorg.isStarting", true);
 						handleOpen2(lastOpened);
 					} else {
 						handleNew2(true);
@@ -485,9 +487,9 @@ ToolpathGenerator.GeneratorListener
 				}
 			}
 		}
-
 		// read the preferences that are settable in the preferences window
 		applyPreferences();
+		Base.preferences.putBoolean("replicatorg.isStarting", false);
 	}
 
 	/** 

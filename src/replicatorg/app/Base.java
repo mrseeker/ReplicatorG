@@ -438,7 +438,6 @@ public class Base {
 	
 
 	static public void main(String args[]) {
-
 		// make sure that this is running on java 1.5 or better.
 		if (Base.javaVersion < 1.5f) {
 			Base.quitWithError("Need to install Java 1.5",

@@ -81,7 +81,7 @@ public class ToolpathGeneratorFactory {
 		class Slic3r071 extends Slic3rGenerator {
 			
 			{
-				displayName = "Slic3r 0.7.1";
+				displayName = "Slic3r 0.7.2b - experimental";
 			}
 			
 			public File getDefaultSlic3rDir() {
@@ -295,7 +295,7 @@ public class ToolpathGeneratorFactory {
 		class Skeinforge47 extends SkeinforgeGenerator {
 
 			{
-				displayName = "Skeinforge (47)";
+				displayName = "Skeinforge (47) - experimental";
 			}
 			
 			public File getDefaultSkeinforgeDir() {
@@ -374,7 +374,7 @@ public class ToolpathGeneratorFactory {
 		class Skeinforge50 extends SkeinforgeGenerator {
 
 			{
-				displayName = "Skeinforge (50)";
+				displayName = "Skeinforge (50) - experimental";
 			}
 			
 			public File getDefaultSkeinforgeDir() {

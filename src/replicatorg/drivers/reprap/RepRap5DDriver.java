@@ -40,6 +40,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -730,8 +732,12 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 				readResponseLock.unlock();
 				throw new RuntimeException(e);
 			}
-
-			//System.out.println("received: " + line);
+			
+			if (Base.logger.getLevel() == Level.FINEST)
+			{
+				Base.logger.finest("received: " + line);
+				System.out.println("received: " + line);
+			}
 			if(debugLevel > 1)
 				Base.logger.info("<< " + line);
 
@@ -743,7 +749,14 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			}
 			else if (line.startsWith("error:")) {
 				//if warning is turned on relay it to the user for debugging
-				Base.logger.warning(line.substring(5));
+				Base.logger.warning(line.substring(6));
+				if (Base.logger.getLevel() != Level.INFO)
+				{
+					if (line.substring(6) != "")
+					{
+						Base.showWarning("ReplicatorG encountered an error", line.substring(6), new Exception());
+					}
+				}
 			}
 			else if (line.startsWith("ok t:")||line.startsWith("t:")) {
 				Pattern r = Pattern.compile("t:([0-9\\.]+)");
@@ -760,6 +773,12 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			    	String bedTemp = m.group(1);
 					machine.currentTool().setPlatformCurrentTemperature(
 							Double.parseDouble(bedTemp));
+			    }
+			    r = Pattern.compile("w:([0-9\\.]+)");
+			    m = r.matcher(line);
+			    if (m.find()) {
+			    	String temp = m.group(1);
+					Base.logger.finer("Waiting time: " + temp + " seconds...");
 			    }
 			}
 			else if (line.startsWith("ok c:")||line.startsWith("x:")||line.startsWith("c:")) {
@@ -839,7 +858,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 					throw new BadFirmwareVersionException(version,preferredVersion);
 				}
 			}
-			else if (line.startsWith("echo"))
+			else if (line.startsWith("echo") || line.startsWith("error"))
 			{
 				//Do nothing
 			}

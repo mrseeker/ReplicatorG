@@ -780,6 +780,10 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 			    	String temp = m.group(1);
 					Base.logger.finer("Waiting time: " + temp + " seconds...");
 			    }
+			    else
+			    {
+			    	Base.logger.finer("Waiting time: Unknown");
+			    }
 			}
 			else if (line.startsWith("ok c:")||line.startsWith("x:")||line.startsWith("c:")) {
 				Pattern r = Pattern.compile("x:?([-0-9\\.]+).*y:?([-0-9\\.]+).*z:?([-0-9\\.]+).*");

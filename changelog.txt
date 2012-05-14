@@ -1,7 +1,15 @@
-0034 UltiReplicatorG
+0035 UltiReplicatorG
+ * Updated to handle accleration for The Replicator
  * Fixed bug with extruder control not functioning.
  * Added support for SF50
  * Fixed bug with recognizing some marlin faults.
+ * Fixed bug with build bed
+ * Fixed bug with test object crashing in head
+ * Added extra support for error messages.
+ * Fixed bug with temperature not recognized
+ * Added timer when using "finer" logging.
+
+0034 UltiReplicatorG
  * Recognization of M115 commands
  * Updated t0 to t1 tolerance code
  * Fixed several problems with reprap5D

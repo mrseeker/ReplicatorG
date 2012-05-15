@@ -108,18 +108,20 @@ public class DualStrusionConstruction
 		 * 
 		 * 
 		 */
+		Base.logger.info("Loading files..");
 		left = new MutableGCodeSource(leftFile);
 		right = new MutableGCodeSource(rightFile);
-		
+		Base.logger.info("stripping files..");
 		left.stripStartEndBestEffort();
 		right.stripStartEndBestEffort();
 		
 		stripNonLayerTagComments(left);
 		stripNonLayerTagComments(right);
-
+		Base.logger.info("Parsing files..");
 		LinkedList<Layer> leftLayers = newOldParseLayers(left);
 		LinkedList<Layer> rightLayers = newOldParseLayers(right);
-
+		
+		Base.logger.info("Merging files..");
 		final LinkedList<Layer> merged = doMerge(leftLayers, rightLayers);
 		
 		//process start & end before adding them
@@ -341,12 +343,18 @@ public class DualStrusionConstruction
 				result.addAll(wipe(rightWipe));
 		}
 		
+		//Retraction mod
+		if(machineType != MachineType.THE_REPLICATOR)
+		{
+			result.add("G92 " + getFirstExtrusion(toLayer));
+			result.add("G1 E" + (getFirstExtrusionAmount(toLayer) - 30) + "F200");
+			result.add("G1 F3000");
+		}
 		result.add(toTool.getRecallOffsetGcodeCommand());
 		result.add("M108 "+toTool.getTcode() + "(Set tool)");
-		
 		// Ben's suggestion
 		result.add("M18 A B");
-		
+				
 		final DecimalFormat nf = (DecimalFormat)Base.getGcodeFormat();
 		final Point5d firstPos = getFirstPosition(toLayer);
 		firstPos.setZ(getLayerZ(toLayer));
@@ -370,7 +378,11 @@ public class DualStrusionConstruction
 		if(feedrate.equals(""))
 			feedrate = getLastFeedrate(fromLayer);
 		result.add("G1 " + feedrate);
-
+		if(machineType != MachineType.THE_REPLICATOR)
+		{
+			//Retraction mod
+			result.add("G1 " + getFirstExtrusion(toLayer) + " F200");
+		}
 		
 		//debug code///////////////////////////
 		result.add("(*************end toolchange*************)");
@@ -424,6 +436,54 @@ public class DualStrusionConstruction
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * This gets the last extrusion used in a layer 
+	 * @param l
+	 * @return
+	 */
+	private String getLastExtrusion(final Layer l)
+	{
+		final List<String> search = l.getCommands();
+		GCodeCommand gcode;
+		for(int i = search.size()-1; i >= 0; i--)
+		{
+			gcode = new GCodeCommand(search.get(i));
+			if(gcode.getCodeValue('E') != -1)
+				return "E"+Base.getGcodeFormat().format(gcode.getCodeValue('E'));
+		}
+		return "";
+	}
+	/**
+	 * This gets the first extrusion used in a layer 
+	 * @param l
+	 * @return
+	 */
+	private String getFirstExtrusion(final Layer l)
+	{
+		final List<String> search = l.getCommands();
+		GCodeCommand gcode;
+		for(int i = 0; i < search.size(); i++)
+		{
+			gcode = new GCodeCommand(search.get(i));
+			if(gcode.getCodeValue('E') != -1)
+				return "E"+Base.getGcodeFormat().format(gcode.getCodeValue('E'));
+		}
+		return "";
+	}
+	
+	private Double getFirstExtrusionAmount(final Layer l)
+	{
+		final List<String> search = l.getCommands();
+		GCodeCommand gcode;
+		for(int i = 0; i < search.size(); i++)
+		{
+			gcode = new GCodeCommand(search.get(i));
+			if(gcode.getCodeValue('E') != -1)
+				return gcode.getCodeValue('E');
+		}
+		return 0.0;
 	}
 	
 	/**

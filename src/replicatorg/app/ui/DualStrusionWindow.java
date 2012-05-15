@@ -530,7 +530,6 @@ public class DualStrusionWindow extends JFrame{
 					"One or both is/are absent. Cancelling Dualstrusion combination");
 			return;
 		}
-		
 		DualStrusionConstruction dsConstruction = new DualStrusionConstruction(leftGcode, rightGcode, startSource, endSource, type, uWipe);
 		dsConstruction.combine();
 		dsConstruction.getCombinedFile().writeToFile(dest);

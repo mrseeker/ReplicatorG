@@ -43,7 +43,6 @@ public class MutableGCodeSource implements GCodeSource {
 	
 	public MutableGCodeSource(File sourceFile) {
 		String curline;
-		
 		if(sourceFile == null) {
 			Base.logger.warning("MutableGCodeSource passed a null sourceFile");
 			return;

@@ -346,6 +346,7 @@ public class DualStrusionConstruction
 		//Retraction mod
 		if(machineType != MachineType.THE_REPLICATOR)
 		{
+			result.add ("G1 X-50 Y-50");
 			result.add("G92 " + getFirstExtrusion(toLayer));
 			result.add("G1 E" + (getFirstExtrusionAmount(toLayer) - 30) + "F200");
 			result.add("G1 F3000");
@@ -354,7 +355,12 @@ public class DualStrusionConstruction
 		result.add("M108 "+toTool.getTcode() + "(Set tool)");
 		// Ben's suggestion
 		result.add("M18 A B");
-				
+		if(machineType != MachineType.THE_REPLICATOR)
+		{
+			//Extra extrusion
+			result.add("G1 E" + (getFirstExtrusionAmount(toLayer) + 5) + "F200");
+			result.add("G92 " + getFirstExtrusion(toLayer));
+		}		
 		final DecimalFormat nf = (DecimalFormat)Base.getGcodeFormat();
 		final Point5d firstPos = getFirstPosition(toLayer);
 		firstPos.setZ(getLayerZ(toLayer));

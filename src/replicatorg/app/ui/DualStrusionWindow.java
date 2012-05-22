@@ -182,7 +182,7 @@ public class DualStrusionWindow extends JFrame{
 					leftToolhead.setText(s);
 			}
 		});
-		panel.add(new JLabel("Left Extruder"), "split");
+		panel.add(new JLabel("Extruder 0"), "split");
 		panel.add(leftToolhead,"split, growx");
 		panel.add(leftChooserButton, "wrap");
 
@@ -214,7 +214,7 @@ public class DualStrusionWindow extends JFrame{
 //			}
 //		});
 //		panel.add(switchItem, "wrap");
-		panel.add(new JLabel("Right Extruder"), "split");
+		panel.add(new JLabel("Extruder 1"), "split");
 		panel.add(rightToolhead,"split, growx");
 		panel.add(rightChooserButton, "wrap");
 

@@ -1,7 +1,7 @@
-Format is tab separated hop preferences.
-Name                          	Value
+Format is tab separated hop settings.
+_Name                          	Value
+WindowPosition	600+0
+Open File for Hop	
 Activate Hop	False
-Open File to be Hopped	
 Hop Over Layer Thickness (ratio):	1.0
 Minimum Hop Angle (degrees):	30.0
-windowPositionHop Preferences	600+0

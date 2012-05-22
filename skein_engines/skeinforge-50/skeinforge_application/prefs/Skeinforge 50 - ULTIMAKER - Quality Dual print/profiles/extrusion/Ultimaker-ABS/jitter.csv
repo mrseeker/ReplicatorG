@@ -1,7 +1,6 @@
-Format is tab separated jitter preferences.
-Name                          	Value
-WindowVisibilities
+Format is tab separated jitter settings.
+_Name                          	Value
+WindowPosition	600+0
 Open File for Jitter	
 Activate Jitter	True
-Jitter Over Extrusion Width (ratio):	2.0
-windowPositionJitter Preferences	600+0
+Jitter Over Perimeter Width (ratio):	2.0

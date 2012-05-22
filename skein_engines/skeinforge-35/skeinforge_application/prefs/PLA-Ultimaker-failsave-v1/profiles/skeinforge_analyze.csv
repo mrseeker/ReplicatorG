@@ -2,9 +2,9 @@ Format is tab separated skeinforge analyze settings.
 Name                          	Value
 WindowPosition	0+0
 Open File for Analyze	/home/erik/Desktop/big-hand_export.gcode
-behold	False
 comment	False
 interpret	False
-skeinview	False
+skeiniso	False
+skeinlayer	True
 statistic	False
 vectorwrite	False
